@@ -3,13 +3,24 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "test": "jest"
+    "build": "webpack",
+    "move-html": "ncp ./src/index.html ./dist/index.html",
+    "launch": "npm run build && npm run move-html && webpack serve --open"
   },
-  "dependencies": {},
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "jest": "^29.0.0"
-  }
+    "css-loader": "^7.1.2",
+    "jest": "^29.0.0",
+    "ncp": "^2.0.0",
+    "npm-run-all": "^4.1.5",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  },
+  "description": "Aplicación web sencilla para la gestión de una librería digital",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

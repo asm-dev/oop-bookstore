@@ -1,0 +1,9 @@
+[
+  {
+    "loanId": 1,
+    "userId": 1,
+    "bookId": 1,
+    "loanDate": "2024-12-22T14:00:00Z",
+    "returnDate": null
+  }
+]
