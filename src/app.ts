@@ -2,10 +2,11 @@ import "./styles.css";
 import { Book } from "./models/book-model";
 
 const addBookButton = document.getElementById(
-  "addBookButton"
+  "addBookBttn"
 ) as HTMLButtonElement;
 const bookForm = document.getElementById("bookForm") as HTMLDivElement;
 const addBookForm = document.getElementById("addBookForm") as HTMLFormElement;
+const closeButton = document.querySelector(".close-button") as HTMLElement;
 
 addBookButton?.addEventListener("click", () => {
   bookForm.classList.remove("hidden");
@@ -34,7 +35,7 @@ addBookForm?.addEventListener("submit", (event) => {
   const newBook = Book.create(title, author, year, copiesAvailable, genre);
   const updatedBookList = getBookData().concat([newBook]);
 
-  saveBooksToStorage(updatedBookList);
+  saveToStorage(updatedBookList);
 
   alert("Libro añadido exitosamente!");
 
@@ -49,6 +50,36 @@ const getBookData = (): Book[] => {
   return books ? JSON.parse(books) : [];
 };
 
-const saveBooksToStorage = (books: Book[]): void => {
+const saveToStorage = (books: Book[]): void => {
   localStorage.setItem("books", JSON.stringify(books));
 };
+
+document.addEventListener("scroll", () => {
+  const header = document.querySelector("header") as HTMLElement;
+
+  if (window.scrollY > 20) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
+
+document.addEventListener("scroll", () => {
+  const header = document.querySelector("header") as HTMLElement;
+
+  if (window.scrollY > 20) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
+
+addBookButton.addEventListener("click", () => {
+  bookForm.classList.add("visible");
+  bookForm.classList.remove("hidden");
+});
+
+closeButton.addEventListener("click", () => {
+  bookForm.classList.remove("visible");
+  bookForm.classList.add("hidden");
+});

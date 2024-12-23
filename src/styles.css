@@ -3,80 +3,141 @@ body {
   background-color: #f4f6f8;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   color: #333;
+  line-height: 1.6;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
+  transition: height 0.3s ease, background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-button {
-  background-color: #6200ea;
+header.scrolled {
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  transition: font-size 0.3s ease;
+}
+
+header.scrolled h1 {
+  font-size: 1.4rem;
+}
+
+main {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.primaryBttn {
+  background-color: #0662a4;
   color: white;
   border: none;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.2s ease;
 }
 
-button:hover {
-  background-color: #3700b3;
+.primaryBttn:hover {
+  background-color: #054e82;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.secondaryBttn {
+  border: 1px solid #4a7fa57b;
+  background-color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #555;
+  transition: box-shadow 0.2s ease;
+}
+
+.secondaryBttn:hover {
+  border: 1px solid #355c777b;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 #bookForm {
   background-color: #fff;
-  padding: 30px;
+  margin: 3rem 0;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 100%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 20px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  position: relative;
 }
 
-form label {
+#addBookForm {
+  width: 100%;
+}
+
+#bookForm .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  color: #ae2727;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#bookForm .close-button:hover {
+  color: #8f2020;
+}
+
+#bookForm label {
   font-weight: bold;
-  margin-bottom: 5px;
+  padding-bottom: 5px;
   font-size: 14px;
   color: #555;
 }
 
 form input {
-  width: 100%;
+  display: block;
+  width: 95%;
   padding: 10px;
-  margin-bottom: 15px;
+  margin: 5px 0 15px 0;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 14px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 form input:focus {
   outline: none;
-  border-color: #6200ea;
+  border-color: #68abda;
+  box-shadow: 0px 0px 8px rgba(104, 171, 218, 0.3);
 }
 
-form button {
-  background-color: #6200ea;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  font-size: 16px;
-}
-
-form button:hover {
-  background-color: #3700b3;
+#saveBttnContainer {
+  display: flex;
+  justify-content: center;
 }
 
 .hidden {
@@ -86,10 +147,23 @@ form button:hover {
 #bookForm {
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 #bookForm.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  header.scrolled h1 {
+    font-size: 1.2rem;
+  }
+
+  #bookForm {
+    width: 90%;
+  }
 }

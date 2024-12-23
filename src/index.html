@@ -6,15 +6,15 @@
     <title>Librería Digital</title>
   </head>
   <body>
-    <div>
-      <h1>Librería Digital</h1>
-      <button id="addBookButton">Añadir Libro</button>
-
-      <h2>Libros en el catálogo</h2>
-      <ul id="booksList"></ul>
-
+    <header>
+      <h1>Gestión del catálogo de libros</h1>
+    </header>
+    <main>
+      <button id="addBookBttn" class="primaryBttn">Añadir libro</button>
       <div id="bookForm" class="hidden">
-        <h2>Agregar un nuevo libro</h2>
+        <button class="close-button" aria-label="Cerrar formulario">
+          &times;
+        </button>
         <form id="addBookForm">
           <label for="title">Título:</label>
           <input type="text" id="title" required />
@@ -30,11 +30,12 @@
 
           <label for="genre">Género (opcional):</label>
           <input type="text" id="genre" />
-
-          <button type="submit">Guardar Libro</button>
+          <footer id="saveBttnContainer">
+            <button class="secondaryBttn" type="submit">Guardar</button>
+          </footer>
         </form>
       </div>
-    </div>
+    </main>
 
     <script src="bundle.js"></script>
   </body>
