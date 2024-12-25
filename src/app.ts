@@ -2,39 +2,70 @@ import "./styles.css";
 import { Book } from "./models/book-model";
 import { BookService } from "./services/book-service";
 
-const addBookButton = document.getElementById(
-  "addBookBttn"
-) as HTMLButtonElement;
-const closeButton = document.getElementById(
-  "closeFormBttn"
-) as HTMLButtonElement;
-const showCatalogButton = document.getElementById(
+const addBookBttn = document.getElementById("addBookBttn") as HTMLButtonElement;
+const showCatalogBttn = document.getElementById(
   "showCatalogBttn"
 ) as HTMLButtonElement;
+const closeBookFormBttn = document.getElementById(
+  "closeFormBttn"
+) as HTMLButtonElement;
 const bookForm = document.getElementById("bookForm") as HTMLDivElement;
-const addBookForm = document.getElementById("addBookForm") as HTMLFormElement;
 const bookList = document.getElementById("bookList") as HTMLUListElement;
+const addBookForm = document.getElementById("addBookForm") as HTMLFormElement;
 
-addBookButton?.addEventListener("click", () => toggleBookFormVisibility(true));
-closeButton?.addEventListener("click", () => toggleBookFormVisibility(false));
-addBookForm?.addEventListener("submit", handleBookFormSubmit);
-showCatalogButton?.addEventListener("click", showCatalog);
-
-function toggleBookFormVisibility(shouldDisplay: boolean): void {
-  if (shouldDisplay) {
+function toggleBookFormVisibility(show: boolean) {
+  if (show) {
     bookForm.classList.add("visible");
   } else {
     bookForm.classList.remove("visible");
+    addBookForm.reset();
   }
 }
 
-function getFormValues(): {
-  title: string;
-  author: string;
-  year: number;
-  copiesAvailable: number;
-  genre?: string;
-} {
+const hideForm = (): void => toggleBookFormVisibility(false);
+const showForm = (): void => toggleBookFormVisibility(true);
+
+async function showCatalog() {
+  try {
+    const books = await BookService.getAll();
+    bookList.innerHTML = "";
+
+    books.forEach((book) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = `${book.title} - ${book.author} (${book.year})`;
+
+      const editLink = document.createElement("a");
+      editLink.href = "#";
+      editLink.textContent = "Editar";
+      editLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        retrieveBookData(book);
+      });
+
+      listItem.appendChild(editLink);
+      bookList.appendChild(listItem);
+    });
+  } catch (error) {
+    alert("Error al mostrar el catálogo: " + error);
+  }
+}
+
+function retrieveBookData(book: Book) {
+  (document.getElementById("title") as HTMLInputElement).value = book.title;
+  (document.getElementById("author") as HTMLInputElement).value = book.author;
+  (document.getElementById("year") as HTMLInputElement).value =
+    book.year.toString();
+  (document.getElementById("copiesAvailable") as HTMLInputElement).value =
+    book.copiesAvailable.toString();
+  (document.getElementById("genre") as HTMLInputElement).value =
+    book.genre || "";
+
+  showForm();
+}
+
+async function handleFormSubmit(event: SubmitEvent) {
+  event.preventDefault();
+
   const title = (
     document.getElementById("title") as HTMLInputElement
   ).value.trim();
@@ -49,136 +80,28 @@ function getFormValues(): {
       document.getElementById("copiesAvailable") as HTMLInputElement
     ).value.trim()
   );
-  const genre =
-    (document.getElementById("genre") as HTMLInputElement).value.trim() ||
-    undefined;
+  const genre = (
+    document.getElementById("genre") as HTMLInputElement
+  ).value.trim();
 
-  return { title, author, year, copiesAvailable, genre };
-}
-
-function setFormValues(book: Book): void {
-  (document.getElementById("title") as HTMLInputElement).value = book.title;
-  (document.getElementById("author") as HTMLInputElement).value = book.author;
-  (document.getElementById("year") as HTMLInputElement).value =
-    book.year.toString();
-  (document.getElementById("copiesAvailable") as HTMLInputElement).value =
-    book.copiesAvailable.toString();
-  (document.getElementById("genre") as HTMLInputElement).value =
-    book.genre || "";
-}
-
-function isBookFormValid(): boolean {
-  const { title, author, year, copiesAvailable } = getFormValues();
-  return !!(title && author && !isNaN(year) && !isNaN(copiesAvailable));
-}
-
-function handleErrors(error: unknown): void {
-  if (error instanceof Error) {
-    alert(error.message);
-  } else {
-    alert("Ha ocurrido un error desconocido.");
-  }
-}
-
-async function handleBookFormSubmit(event: SubmitEvent): Promise<void> {
-  event.preventDefault();
-
-  if (!isBookFormValid()) {
-    alert("Todos los campos son obligatorios.");
+  if (!title || !author || isNaN(year) || isNaN(copiesAvailable)) {
+    alert("Por favor revise el formulario.");
     return;
   }
 
-  const bookData = getFormValues();
-  const storedBookList = await BookService.getAll();
-  const existingBook = storedBookList.find(
-    (book) => book.title === bookData.title
-  );
+  const book = new Book(title, author, year, copiesAvailable, genre);
 
   try {
-    if (existingBook) {
-      updateBook(existingBook, bookData);
-    } else {
-      addNewBook(bookData);
-    }
-
-    toggleBookFormVisibility(false);
-    showCatalog();
-    addBookForm.reset();
+    await BookService.saveBook(book);
+    alert("Libro guardado con éxito");
+    hideForm();
+    await showCatalog();
   } catch (error) {
-    handleErrors(error);
+    alert("Error al guardar el libro: " + error);
   }
 }
 
-function updateBook(existingBook: Book, bookData: Partial<Book>): void {
-  const updatedBook = new Book(
-    existingBook.title,
-    bookData.author || existingBook.author,
-    bookData.year || existingBook.year,
-    bookData.copiesAvailable || existingBook.copiesAvailable,
-    bookData.genre || existingBook.genre
-  );
-
-  BookService.updateInfo(updatedBook);
-  alert("Libro actualizado exitosamente.");
-}
-
-function addNewBook(bookData: {
-  title: string;
-  author: string;
-  year: number;
-  copiesAvailable: number;
-  genre?: string;
-}): void {
-  const newBook = Book.create(
-    bookData.title,
-    bookData.author,
-    bookData.year,
-    bookData.copiesAvailable,
-    bookData.genre
-  );
-
-  BookService.addBook(newBook);
-  alert("Libro añadido exitosamente.");
-}
-
-async function showCatalog(): Promise<void> {
-  bookList.innerHTML = "";
-  const storedBookList = await BookService.getAll();
-
-  storedBookList.forEach((book) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = `${book.title} - ${book.author} (${book.year})`;
-
-    const editLink = document.createElement("a");
-    editLink.href = "#";
-    editLink.textContent = "Editar";
-    editLink.addEventListener("click", () => editBook(book));
-
-    listItem.appendChild(editLink);
-    bookList.appendChild(listItem);
-  });
-}
-
-function editBook(book: Book): void {
-  toggleBookFormVisibility(true);
-  setFormValues(book);
-
-  addBookForm.onsubmit = (event) => {
-    event.preventDefault();
-
-    if (!isBookFormValid()) {
-      alert("Todos los campos son obligatorios.");
-      return;
-    }
-
-    try {
-      const updatedData = getFormValues();
-      updateBook(book, updatedData);
-      toggleBookFormVisibility(false);
-      showCatalog();
-      addBookForm.reset();
-    } catch (error) {
-      handleErrors(error);
-    }
-  };
-}
+addBookBttn.addEventListener("click", () => toggleBookFormVisibility(true));
+closeBookFormBttn.addEventListener("click", () => hideForm());
+addBookForm.addEventListener("submit", handleFormSubmit);
+showCatalogBttn.addEventListener("click", showCatalog);

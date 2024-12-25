@@ -3,37 +3,37 @@ import { Book } from "../models/book-model";
 const API_URL = "http://localhost:3000/api/books";
 
 export class BookService {
-  public static async getAll(): Promise<Book[]> {
+  static async getAll(): Promise<Book[]> {
     const response = await fetch(API_URL);
-    if (!response.ok) {
-      throw new Error("Error al obtener los libros.");
-    }
+    if (!response.ok) throw new Error("Error al obtener los libros.");
     return response.json();
   }
 
-  public static async addBook(newBook: Book): Promise<void> {
+  static async addBook(book: Book): Promise<Book> {
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newBook),
+      body: JSON.stringify(book),
     });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Error al agregar el libro.");
-    }
+    if (!response.ok) throw new Error("Error al añadir el libro.");
+    return response.json();
   }
 
-  public static async updateInfo(updatedBook: Book): Promise<void> {
-    const response = await fetch(`${API_URL}/${updatedBook.title}`, {
+  static async updateBook(book: Book): Promise<Book> {
+    const response = await fetch(`${API_URL}/${book.title}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedBook),
+      body: JSON.stringify(book),
     });
+    if (!response.ok) throw new Error("Error al actualizar el libro.");
+    return response.json();
+  }
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Error al actualizar el libro.");
+  static async saveBook(book: Book): Promise<Book> {
+    try {
+      return await this.updateBook(book);
+    } catch {
+      return await this.addBook(book);
     }
   }
 }
