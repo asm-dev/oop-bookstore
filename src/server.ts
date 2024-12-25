@@ -76,6 +76,23 @@ app.put("/api/books/:title", (req: Request, res: Response) => {
   }
 });
 
+app.delete("/api/books/:title", (req: Request, res: Response) => {
+  try {
+    const title = req.params.title;
+    const books = readBooks();
+
+    const filteredBooks = books.filter((book) => book.title !== title);
+    if (books.length === filteredBooks.length) {
+      return res.status(404).json({ error: "El libro no existe." });
+    }
+
+    saveBooks(filteredBooks);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el libro." });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en http://localhost:${PORT}`);
 });

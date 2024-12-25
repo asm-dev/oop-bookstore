@@ -36,4 +36,11 @@ export class BookService {
       return await this.addBook(book);
     }
   }
+
+  static async deleteBook(title: string): Promise<void> {
+    const response = await fetch(`${API_URL}/${title}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Error al eliminar el libro.");
+  }
 }

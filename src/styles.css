@@ -142,7 +142,7 @@ main {
 
 #bookForm input {
   display: block;
-  width: 95%; /* Ocupa el 95% del ancho del contenedor */
+  width: 95%;
   padding: 10px;
   margin: 5px 0 15px 0;
   border: 1px solid var(--light-gray);
@@ -159,7 +159,7 @@ main {
 
 #bookForm #saveBttnContainer {
   display: flex;
-  justify-content: center; /* Centra el botón de guardar */
+  justify-content: center;
   width: 100%;
 }
 
@@ -200,4 +200,44 @@ main {
 #closeCatalogBttn:hover {
   background-color: var(--accent-hover);
   color: white;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--secondary-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+  width: 90%;
+  max-width: 400px;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#closePopup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#closePopup:hover {
+  color: var(--accent-hover);
 }

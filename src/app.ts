@@ -60,7 +60,20 @@ async function showCatalog() {
         retrieveBookData(book);
       });
 
-      listItem.appendChild(editLink);
+      const deleteLink = document.createElement("a");
+      deleteLink.href = "#";
+      deleteLink.textContent = "Eliminar";
+      deleteLink.classList.add("delete-link");
+      deleteLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        showDeletePopup(book);
+      });
+
+      const buttonContainer = document.createElement("div");
+      buttonContainer.classList.add("button-container");
+      buttonContainer.append(editLink, deleteLink);
+
+      listItem.appendChild(buttonContainer);
       bookList.appendChild(listItem);
     });
 
@@ -75,6 +88,40 @@ function hideCatalog() {
   bookList.innerHTML = "";
   showCatalogBttn.style.display = "inline-block";
   closeCatalogBttn.style.display = "none";
+}
+
+function showDeletePopup(book: Book) {
+  const popup = document.getElementById("deletePopup") as HTMLDivElement;
+  const deleteMessage = document.getElementById(
+    "deleteMessage"
+  ) as HTMLParagraphElement;
+  deleteMessage.textContent = `¿Estás seguro de que quieres eliminar el libro "${book.title}"?`;
+
+  const confirmDelete = document.getElementById(
+    "confirmDelete"
+  ) as HTMLButtonElement;
+  const cancelDelete = document.getElementById(
+    "cancelDelete"
+  ) as HTMLButtonElement;
+  const closeBtn = document.getElementById("closePopup") as HTMLButtonElement;
+
+  popup.classList.remove("hidden");
+
+  const closePopup = () => popup.classList.add("hidden");
+
+  closeBtn.onclick = closePopup;
+  cancelDelete.onclick = closePopup;
+
+  confirmDelete.onclick = async () => {
+    try {
+      await BookService.deleteBook(book.title);
+      alert("Libro eliminado con éxito");
+      closePopup();
+      await showCatalog();
+    } catch (error) {
+      alert("Error al eliminar el libro: " + error);
+    }
+  };
 }
 
 function retrieveBookData(book: Book) {
