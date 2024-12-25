@@ -95,7 +95,7 @@ main {
   width: 100%;
 }
 
-#bookForm .close-button {
+#bookForm #closeFormBttn {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -107,7 +107,7 @@ main {
   transition: color 0.3s ease;
 }
 
-#bookForm .close-button:hover {
+#bookForm #closeFormBttn:hover {
   color: #8f2020;
 }
 
@@ -140,18 +140,17 @@ form input:focus {
   justify-content: center;
 }
 
-.hidden {
-  display: none;
-}
-
 #bookForm {
   opacity: 0;
   transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  visibility: hidden;
 }
 
 #bookForm.visible {
   opacity: 1;
   transform: translateY(0);
+  visibility: visible;
 }
 
 @media (max-width: 768px) {
@@ -166,4 +165,27 @@ form input:focus {
   #bookForm {
     width: 90%;
   }
+}
+
+#bookList {
+  list-style: none;
+  padding: 0;
+}
+
+#bookList li {
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#bookList a {
+  color: #0662a4;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#bookList a:hover {
+  text-decoration: underline;
 }
