@@ -55,6 +55,7 @@ async function showCatalog() {
       const editLink = document.createElement("a");
       editLink.href = "#";
       editLink.textContent = "Editar";
+      editLink.classList.add("catalog-link-add");
       editLink.addEventListener("click", (event) => {
         event.preventDefault();
         retrieveBookData(book);
@@ -63,7 +64,7 @@ async function showCatalog() {
       const deleteLink = document.createElement("a");
       deleteLink.href = "#";
       deleteLink.textContent = "Eliminar";
-      deleteLink.classList.add("delete-link");
+      deleteLink.classList.add("catalog-link-delete");
       deleteLink.addEventListener("click", (event) => {
         event.preventDefault();
         showDeletePopup(book);

@@ -88,7 +88,7 @@ main {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.addBookForm {
+#addBookForm {
   display: contents;
 }
 
@@ -169,21 +169,12 @@ main {
 }
 
 #bookList li {
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid var(--light-gray);
-  margin-bottom: 5px;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
-}
-
-#bookList li a {
-  color: var(--primary-color);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#bookList li a:hover {
-  text-decoration: underline;
 }
 
 #closeCatalogBttn {
@@ -222,8 +213,9 @@ main {
 
 .popup-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+  justify-content: end;
+  gap: 1rem;
+  margin: 0.5rem 0;
 }
 
 #closePopup {
@@ -236,6 +228,29 @@ main {
   color: var(--accent-color);
   cursor: pointer;
   transition: color 0.3s ease;
+}
+
+.catalog-link-add,
+.catalog-link-delete {
+  padding-left: 1rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.catalog-link-delete {
+  color: var(--accent-color);
+}
+
+.catalog-link-delete:hover {
+  color: var(--accent-hover);
+}
+
+.catalog-link-add {
+  color: var(--primary-color);
+}
+
+.catalog-link-add:hover {
+  color: var(--primary-hover);
 }
 
 #closePopup:hover {
