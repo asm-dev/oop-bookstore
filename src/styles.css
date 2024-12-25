@@ -1,23 +1,36 @@
+:root {
+  --primary-color: #0662a4;
+  --primary-hover: #054e82;
+  --secondary-color: white;
+  --secondary-hover: #355c777b;
+  --text-color: #333;
+  --light-gray: #ccc;
+  --background-color: #f4f6f8;
+  --shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  --accent-color: #ae2727;
+  --accent-hover: #8f2020;
+}
+
 body {
   font-family: "Roboto", sans-serif;
-  background-color: #f4f6f8;
+  background-color: var(--background-color);
   margin: 0;
   padding: 0;
-  color: #333;
+  color: var(--text-color);
   line-height: 1.6;
 }
 
 header {
   position: sticky;
   top: 0;
-  background-color: white;
+  background-color: var(--secondary-color);
   z-index: 1000;
   transition: height 0.3s ease, background-color 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 80px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
 }
 
 header.scrolled {
@@ -44,8 +57,8 @@ main {
 }
 
 .primaryBttn {
-  background-color: #0662a4;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
   border: none;
   padding: 10px 20px;
   font-size: 1rem;
@@ -55,32 +68,36 @@ main {
 }
 
 .primaryBttn:hover {
-  background-color: #054e82;
+  background-color: var(--primary-hover);
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .secondaryBttn {
-  border: 1px solid #4a7fa57b;
-  background-color: white;
+  border: 1px solid var(--secondary-hover);
+  background-color: var(--secondary-color);
   padding: 10px 20px;
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
-  color: #555;
+  color: var(--text-color);
   transition: box-shadow 0.2s ease;
 }
 
 .secondaryBttn:hover {
-  border: 1px solid #355c777b;
+  border-color: var(--secondary-hover);
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
+.addBookForm {
+  display: contents;
+}
+
 #bookForm {
-  background-color: #fff;
+  background-color: var(--secondary-color);
   margin: 3rem 0;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
   width: 100%;
   max-width: 500px;
   display: flex;
@@ -89,61 +106,8 @@ main {
   margin-top: 20px;
   transition: opacity 0.4s ease, transform 0.4s ease;
   position: relative;
-}
-
-#addBookForm {
-  width: 100%;
-}
-
-#bookForm #closeFormBttn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: transparent;
-  border: none;
-  font-size: 20px;
-  color: #ae2727;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-#bookForm #closeFormBttn:hover {
-  color: #8f2020;
-}
-
-#bookForm label {
-  font-weight: bold;
-  padding-bottom: 5px;
-  font-size: 14px;
-  color: #555;
-}
-
-form input {
-  display: block;
-  width: 95%;
-  padding: 10px;
-  margin: 5px 0 15px 0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-form input:focus {
-  outline: none;
-  border-color: #68abda;
-  box-shadow: 0px 0px 8px rgba(104, 171, 218, 0.3);
-}
-
-#saveBttnContainer {
-  display: flex;
-  justify-content: center;
-}
-
-#bookForm {
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
   visibility: hidden;
 }
 
@@ -153,18 +117,50 @@ form input:focus {
   visibility: visible;
 }
 
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
+#bookForm #closeFormBttn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
 
-  header.scrolled h1 {
-    font-size: 1.2rem;
-  }
+#bookForm #closeFormBttn:hover {
+  color: var(--accent-hover);
+}
 
-  #bookForm {
-    width: 90%;
-  }
+#bookForm label {
+  font-weight: bold;
+  padding-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+#bookForm input {
+  display: block;
+  width: 95%; /* Ocupa el 95% del ancho del contenedor */
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: 1px solid var(--light-gray);
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#bookForm input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0px 0px 8px rgba(104, 171, 218, 0.3);
+}
+
+#bookForm #saveBttnContainer {
+  display: flex;
+  justify-content: center; /* Centra el botón de guardar */
+  width: 100%;
 }
 
 #bookList {
@@ -174,18 +170,34 @@ form input:focus {
 
 #bookList li {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--light-gray);
   margin-bottom: 5px;
   display: flex;
   justify-content: space-between;
 }
 
-#bookList a {
-  color: #0662a4;
+#bookList li a {
+  color: var(--primary-color);
   text-decoration: none;
   cursor: pointer;
 }
 
-#bookList a:hover {
+#bookList li a:hover {
   text-decoration: underline;
+}
+
+#closeCatalogBttn {
+  border: 1px solid var(--accent-color);
+  background-color: transparent;
+  color: var(--accent-color);
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#closeCatalogBttn:hover {
+  background-color: var(--accent-hover);
+  color: white;
 }

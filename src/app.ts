@@ -12,6 +12,24 @@ const closeBookFormBttn = document.getElementById(
 const bookForm = document.getElementById("bookForm") as HTMLDivElement;
 const bookList = document.getElementById("bookList") as HTMLUListElement;
 const addBookForm = document.getElementById("addBookForm") as HTMLFormElement;
+const header = document.querySelector("header") as HTMLElement;
+
+const closeCatalogBttn = document.createElement("button");
+closeCatalogBttn.id = "closeCatalogBttn";
+closeCatalogBttn.textContent = "Cerrar el catálogo";
+closeCatalogBttn.style.display = "none";
+
+showCatalogBttn.insertAdjacentElement("afterend", closeCatalogBttn);
+
+function handleStickyHeader() {
+  if (window.scrollY > 0) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+}
+
+window.addEventListener("scroll", handleStickyHeader);
 
 function toggleBookFormVisibility(show: boolean) {
   if (show) {
@@ -45,9 +63,18 @@ async function showCatalog() {
       listItem.appendChild(editLink);
       bookList.appendChild(listItem);
     });
+
+    showCatalogBttn.style.display = "none";
+    closeCatalogBttn.style.display = "inline-block";
   } catch (error) {
     alert("Error al mostrar el catálogo: " + error);
   }
+}
+
+function hideCatalog() {
+  bookList.innerHTML = "";
+  showCatalogBttn.style.display = "inline-block";
+  closeCatalogBttn.style.display = "none";
 }
 
 function retrieveBookData(book: Book) {
@@ -105,3 +132,4 @@ addBookBttn.addEventListener("click", () => toggleBookFormVisibility(true));
 closeBookFormBttn.addEventListener("click", () => hideForm());
 addBookForm.addEventListener("submit", handleFormSubmit);
 showCatalogBttn.addEventListener("click", showCatalog);
+closeCatalogBttn.addEventListener("click", hideCatalog);
