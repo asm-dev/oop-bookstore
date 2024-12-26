@@ -140,7 +140,8 @@ main {
   color: #555;
 }
 
-#bookForm input {
+#bookForm input,
+#deleteBookUnitsForm input {
   display: block;
   width: 95%;
   padding: 10px;
@@ -151,7 +152,8 @@ main {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-#bookForm input:focus {
+#bookForm input:focus,
+#deleteBookUnitsForm input:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0px 0px 8px rgba(104, 171, 218, 0.3);
@@ -255,4 +257,8 @@ main {
 
 #closePopup:hover {
   color: var(--accent-hover);
+}
+
+#deleteBookUnitsForm {
+  margin: 2rem 0;
 }

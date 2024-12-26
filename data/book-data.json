@@ -3,14 +3,21 @@
     "title": "El Señor de los Anillos",
     "author": "J.R.R. Tolkien",
     "year": 1954,
-    "copiesAvailable": 1,
+    "copiesAvailable": 5,
     "genre": "Fantasía"
   },
   {
     "title": "1984",
     "author": "George Orwell",
     "year": 1949,
-    "copiesAvailable": 4,
+    "copiesAvailable": 1,
     "genre": "Distopía"
+  },
+  {
+    "title": "Prueba",
+    "author": "Mock",
+    "year": 123,
+    "copiesAvailable": 5,
+    "genre": ""
   }
 ]

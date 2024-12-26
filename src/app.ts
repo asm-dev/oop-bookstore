@@ -1,8 +1,8 @@
 import "./styles.css";
 import { Book } from "./models/book-model";
 import { BookService } from "./services/book-service";
-import { handleStickyHeader } from "./utils/dom-manipulation/sticky-header-handler";
-import { isBookFormEnabled } from "./utils/dom-manipulation/show-form";
+import { handleStickyHeader } from "./utils/sticky-header-handler";
+import { isBookFormEnabled } from "./utils/show-form";
 
 const showCatalogBttn = document.getElementById(
   "showCatalogBttn"
@@ -10,6 +10,19 @@ const showCatalogBttn = document.getElementById(
 const closeBookFormBttn = document.getElementById(
   "closeFormBttn"
 ) as HTMLButtonElement;
+const confirmDelete = document.getElementById(
+  "confirmDelete"
+) as HTMLButtonElement;
+const cancelDelete = document.getElementById(
+  "cancelDelete"
+) as HTMLButtonElement;
+const deleteMessage = document.getElementById(
+  "deleteMessage"
+) as HTMLParagraphElement;
+const closePopupButton = document.getElementById(
+  "closePopup"
+) as HTMLButtonElement;
+const popup = document.getElementById("deletePopup") as HTMLDivElement;
 const bookList = document.getElementById("bookList") as HTMLUListElement;
 const addBookBttn = document.getElementById("addBookBttn") as HTMLButtonElement;
 const addBookForm = document.getElementById("addBookForm") as HTMLFormElement;
@@ -63,37 +76,74 @@ async function showCatalog(): Promise<void> {
 }
 
 function showDeletePopup(book: Book): void {
-  const popup = document.getElementById("deletePopup") as HTMLDivElement;
-  const deleteMessage = document.getElementById(
-    "deleteMessage"
-  ) as HTMLParagraphElement;
-  deleteMessage.textContent = `¿Estás seguro de que quieres eliminar el libro "${book.title}"?`;
-
-  const confirmDelete = document.getElementById(
-    "confirmDelete"
-  ) as HTMLButtonElement;
-  const cancelDelete = document.getElementById(
-    "cancelDelete"
-  ) as HTMLButtonElement;
-  const closeBtn = document.getElementById("closePopup") as HTMLButtonElement;
+  const closePopup = (): void => popup.classList.add("hidden");
+  deleteMessage.textContent = `¿Estás seguro de que quieres eliminar el libro "${
+    book.title
+  }"? Actualmente hay ${book.copiesAvailable} ${
+    book.copiesAvailable === 1 ? "copia disponible." : "copias disponibles."
+  }`;
 
   popup.classList.remove("hidden");
-
-  const closePopup = () => popup.classList.add("hidden");
-
-  closeBtn.onclick = closePopup;
+  closePopupButton.onclick = closePopup;
   cancelDelete.onclick = closePopup;
 
-  confirmDelete.onclick = async () => {
-    try {
-      await BookService.deleteBook(book.title);
-      alert("Libro eliminado con éxito");
-      closePopup();
-      await showCatalog();
-    } catch (error) {
-      alert("Error al eliminar el libro: " + error);
-    }
-  };
+  if (book.copiesAvailable > 1) {
+    const form = document.createElement("form") as HTMLFormElement;
+    form.id = "deleteBookUnitsForm";
+    const label = document.createElement("label") as HTMLLabelElement;
+    label.htmlFor = "units-to-delete";
+    label.textContent = "Por favor selecciona cuantas unidades quieres borrar:";
+    const input = document.createElement("input");
+    input.type = "number";
+    input.id = "units-to-delete";
+    input.name = "unitsToDelete";
+    input.min = "1";
+    input.max = `${book.copiesAvailable}`;
+    input.placeholder = `Introduce un número del 1 al ${book.copiesAvailable}`;
+    input.required = true;
+    form.appendChild(label);
+    form.appendChild(input);
+    deleteMessage.appendChild(form);
+
+    confirmDelete.type = "submit";
+    confirmDelete.textContent = "Borrar copias";
+    confirmDelete.onclick = async () => {};
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const selectedCopies = parseInt(input.value, 10);
+      const updatedBook: Book = { ...book, copiesAvailable: selectedCopies };
+
+      if (selectedCopies >= 1 && selectedCopies <= book.copiesAvailable) {
+        try {
+          await BookService.saveBook(updatedBook);
+          alert("Copias eliminadas con éxito");
+          closePopup();
+          await showCatalog();
+        } catch (error) {
+          alert(
+            "Error al actualizar las copias disponibles del libro: " + error
+          );
+        }
+      } else {
+        alert(
+          `Por favor, introduce un número válido entre 1 y ${book.copiesAvailable}.`
+        );
+      }
+    });
+  } else {
+    confirmDelete.textContent = "Borrar";
+    confirmDelete.onclick = async () => {
+      try {
+        await BookService.deleteBook(book.title);
+        alert("Libro eliminado con éxito");
+        closePopup();
+        await showCatalog();
+      } catch (error) {
+        alert("Error al eliminar el libro: " + error);
+      }
+    };
+  }
 }
 
 function retrieveBookData(book: Book): void {
