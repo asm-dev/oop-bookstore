@@ -9,7 +9,7 @@ export class BookService {
     return response.json();
   }
 
-  public static async addBook(book: Book): Promise<Book> {
+  private static async addBook(book: Book): Promise<Book> {
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -19,7 +19,7 @@ export class BookService {
     return response.json();
   }
 
-  public static async updateBook(book: Book): Promise<Book> {
+  private static async updateBook(book: Book): Promise<Book> {
     const response = await fetch(`${API_URL}/${book.title}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
