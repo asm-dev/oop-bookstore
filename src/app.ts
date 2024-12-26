@@ -6,11 +6,14 @@ import { isBookFormEnabled } from "./utils/show-form";
 import { createBookCopiesRemovalForm } from "./utils/create-book-copies-removal-form";
 import { createListItemFromBook } from "./utils/create-list-item-from-book";
 import { createCloseCatalogButton } from "./utils/create-close-catalog-button";
+import { ApplicationError } from "./types/application-error";
+import { OperationSuccess } from "./types/operation-sucess";
+import { getCustomRemovalMessage } from "./utils/get-custom-removal-message";
 
-const showCatalogBttn = document.getElementById(
+const showCatalogButton = document.getElementById(
   "showCatalogBttn"
 ) as HTMLButtonElement;
-const closeBookFormBttn = document.getElementById(
+const closeBookFormButton = document.getElementById(
   "closeFormBttn"
 ) as HTMLButtonElement;
 const confirmDelete = document.getElementById(
@@ -31,10 +34,21 @@ const addBookBttn = document.getElementById("addBookBttn") as HTMLButtonElement;
 const addBookForm = document.getElementById("addBookForm") as HTMLFormElement;
 const closeCatalogButton = createCloseCatalogButton();
 
-showCatalogBttn.insertAdjacentElement("afterend", closeCatalogButton);
+showCatalogButton.insertAdjacentElement("afterend", closeCatalogButton);
 
 const getCatalogData = (): Promise<Book[]> => BookService.getAll();
 const closePopup = (): void => popup.classList.add("hidden");
+const restartCatalog = (): void => {
+  bookList.innerHTML = "";
+};
+const displayCatalogButton = (): void => {
+  showCatalogButton.style.display = "none";
+  closeCatalogButton.style.display = "inline-block";
+};
+const displayCloseCatalogButton = (): void => {
+  showCatalogButton.style.display = "inline-block";
+  closeCatalogButton.style.display = "none";
+};
 
 async function showCatalog(): Promise<void> {
   try {
@@ -50,19 +64,19 @@ async function showCatalog(): Promise<void> {
       bookList.appendChild(listItem);
     });
 
-    showCatalogBttn.style.display = "none";
-    closeCatalogButton.style.display = "inline-block";
+    displayCatalogButton();
   } catch (error) {
-    alert("Error al mostrar el catálogo: " + error);
+    alert(ApplicationError.LOAD_CATALOG);
   }
 }
 
+const hideCatalog = (): void => {
+  restartCatalog();
+  displayCloseCatalogButton();
+};
+
 function showDeletePopup(book: Book): void {
-  deleteMessage.textContent = `¿Estás seguro de que quieres eliminar el libro "${
-    book.title
-  }"? Actualmente hay ${book.copiesAvailable} ${
-    book.copiesAvailable === 1 ? "copia disponible." : "copias disponibles."
-  }`;
+  deleteMessage.textContent = getCustomRemovalMessage(book);
 
   popup.classList.remove("hidden");
   closePopupButton.onclick = closePopup;
@@ -76,28 +90,29 @@ function showDeletePopup(book: Book): void {
     confirmDelete.textContent = "Borrar copias";
 
     confirmDelete.onclick = async () => {
-      const input = document.getElementById(
-        "unitsToDelete"
-      ) as HTMLInputElement;
-      const selectedCopies = parseInt(input.value, 10);
-      const updatedBook: Book = {
-        ...book,
-        copiesAvailable: book.copiesAvailable - selectedCopies,
-      };
+      const selectedCopies = parseInt(
+        (document.getElementById("unitsToDelete") as HTMLInputElement).value,
+        10
+      );
+      const areSelectedCopiesValid =
+        selectedCopies >= 1 && selectedCopies < book.copiesAvailable;
+      const areSelectedCopiesSameThanAvailable =
+        selectedCopies === book.copiesAvailable;
 
-      if (selectedCopies >= 1 && selectedCopies < book.copiesAvailable) {
+      if (areSelectedCopiesValid) {
         try {
-          await BookService.saveBook(updatedBook);
-          alert("Copias eliminadas con éxito");
+          await BookService.saveBook({
+            ...book,
+            copiesAvailable: book.copiesAvailable - selectedCopies,
+          });
+          alert(OperationSuccess.DELETED_COPIES);
           closePopup();
           restartCatalog();
           await showCatalog();
         } catch (error) {
-          alert(
-            "Error al actualizar las copias disponibles del libro: " + error
-          );
+          alert(ApplicationError.SAVE_COPIES);
         }
-      } else if (selectedCopies === book.copiesAvailable) {
+      } else if (areSelectedCopiesSameThanAvailable) {
         deleteBook(book.title);
       } else {
         alert(
@@ -116,24 +131,24 @@ function showDeletePopup(book: Book): void {
 const deleteBook = async (bookTitle: string): Promise<void> => {
   try {
     await BookService.deleteBook(bookTitle);
-    alert("Libro eliminado con éxito");
+    alert(OperationSuccess.DELETED_BOOK);
     closePopup();
     restartCatalog();
     await showCatalog();
   } catch (error) {
-    alert("Error al eliminar el libro: " + error);
+    alert(ApplicationError.DELETE_BOOK);
   }
 };
 
 const saveBook = async (book: Book): Promise<void> => {
   try {
     await BookService.saveBook(book);
-    alert("Libro guardado con éxito");
+    alert(OperationSuccess.SAVED_BOOK);
     isBookFormEnabled(false);
     restartCatalog();
     await showCatalog();
   } catch (error) {
-    alert("Error al guardar el libro: " + error);
+    alert(ApplicationError.SAVE_BOOK);
   }
 };
 
@@ -181,20 +196,10 @@ async function handleFormSubmit(event: SubmitEvent): Promise<void> {
   saveBook(book);
 }
 
-const hideCatalog = (): void => {
-  restartCatalog();
-  showCatalogBttn.style.display = "inline-block";
-  closeCatalogButton.style.display = "none";
-};
-
-const restartCatalog = (): void => {
-  bookList.innerHTML = "";
-};
-
 window.addEventListener("scroll", handleStickyHeader);
 
 addBookBttn.addEventListener("click", () => isBookFormEnabled(true));
-closeBookFormBttn.addEventListener("click", () => isBookFormEnabled(false));
+closeBookFormButton.addEventListener("click", () => isBookFormEnabled(false));
 addBookForm.addEventListener("submit", handleFormSubmit);
-showCatalogBttn.addEventListener("click", showCatalog);
+showCatalogButton.addEventListener("click", showCatalog);
 closeCatalogButton.addEventListener("click", hideCatalog);

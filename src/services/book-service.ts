@@ -1,11 +1,12 @@
 import { Book } from "../models/book-model";
+import { ApplicationError } from "../types/application-error";
 
 const API_URL = "http://localhost:3000/api/books";
 
 export class BookService {
   public static async getAll(): Promise<Book[]> {
     const response = await fetch(API_URL);
-    if (!response.ok) throw new Error("Error al obtener los libros.");
+    if (!response.ok) throw new Error(ApplicationError.GET_BOOKS);
     return response.json();
   }
 
@@ -15,7 +16,7 @@ export class BookService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(book),
     });
-    if (!response.ok) throw new Error("Error al añadir el libro.");
+    if (!response.ok) throw new Error(ApplicationError.ADD_BOOK);
     return response.json();
   }
 
@@ -25,7 +26,7 @@ export class BookService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(book),
     });
-    if (!response.ok) throw new Error("Error al actualizar el libro.");
+    if (!response.ok) throw new Error(ApplicationError.UPDATE_BOOK);
     return response.json();
   }
 
@@ -41,6 +42,6 @@ export class BookService {
     const response = await fetch(`${API_URL}/${title}`, {
       method: "DELETE",
     });
-    if (!response.ok) throw new Error("Error al eliminar el libro.");
+    if (!response.ok) throw new Error(ApplicationError.DELETE_BOOK);
   }
 }
