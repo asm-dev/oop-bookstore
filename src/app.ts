@@ -1,49 +1,26 @@
 import "./styles.css";
 import { Book } from "./models/book-model";
 import { BookService } from "./services/book-service";
+import { handleStickyHeader } from "./utils/dom-manipulation/sticky-header-handler";
+import { isBookFormEnabled } from "./utils/dom-manipulation/show-form";
 
-const addBookBttn = document.getElementById("addBookBttn") as HTMLButtonElement;
 const showCatalogBttn = document.getElementById(
   "showCatalogBttn"
 ) as HTMLButtonElement;
 const closeBookFormBttn = document.getElementById(
   "closeFormBttn"
 ) as HTMLButtonElement;
-const bookForm = document.getElementById("bookForm") as HTMLDivElement;
 const bookList = document.getElementById("bookList") as HTMLUListElement;
+const addBookBttn = document.getElementById("addBookBttn") as HTMLButtonElement;
 const addBookForm = document.getElementById("addBookForm") as HTMLFormElement;
-const header = document.querySelector("header") as HTMLElement;
 
 const closeCatalogBttn = document.createElement("button");
 closeCatalogBttn.id = "closeCatalogBttn";
 closeCatalogBttn.textContent = "Cerrar el catálogo";
 closeCatalogBttn.style.display = "none";
-
 showCatalogBttn.insertAdjacentElement("afterend", closeCatalogBttn);
 
-function handleStickyHeader() {
-  if (window.scrollY > 0) {
-    header.classList.add("scrolled");
-  } else {
-    header.classList.remove("scrolled");
-  }
-}
-
-window.addEventListener("scroll", handleStickyHeader);
-
-function toggleBookFormVisibility(show: boolean) {
-  if (show) {
-    bookForm.classList.add("visible");
-  } else {
-    bookForm.classList.remove("visible");
-    addBookForm.reset();
-  }
-}
-
-const hideForm = (): void => toggleBookFormVisibility(false);
-const showForm = (): void => toggleBookFormVisibility(true);
-
-async function showCatalog() {
+async function showCatalog(): Promise<void> {
   try {
     const books = await BookService.getAll();
     bookList.innerHTML = "";
@@ -85,13 +62,7 @@ async function showCatalog() {
   }
 }
 
-function hideCatalog() {
-  bookList.innerHTML = "";
-  showCatalogBttn.style.display = "inline-block";
-  closeCatalogBttn.style.display = "none";
-}
-
-function showDeletePopup(book: Book) {
+function showDeletePopup(book: Book): void {
   const popup = document.getElementById("deletePopup") as HTMLDivElement;
   const deleteMessage = document.getElementById(
     "deleteMessage"
@@ -125,7 +96,7 @@ function showDeletePopup(book: Book) {
   };
 }
 
-function retrieveBookData(book: Book) {
+function retrieveBookData(book: Book): void {
   (document.getElementById("title") as HTMLInputElement).value = book.title;
   (document.getElementById("author") as HTMLInputElement).value = book.author;
   (document.getElementById("year") as HTMLInputElement).value =
@@ -135,10 +106,10 @@ function retrieveBookData(book: Book) {
   (document.getElementById("genre") as HTMLInputElement).value =
     book.genre || "";
 
-  showForm();
+  isBookFormEnabled(true);
 }
 
-async function handleFormSubmit(event: SubmitEvent) {
+async function handleFormSubmit(event: SubmitEvent): Promise<void> {
   event.preventDefault();
 
   const title = (
@@ -169,15 +140,23 @@ async function handleFormSubmit(event: SubmitEvent) {
   try {
     await BookService.saveBook(book);
     alert("Libro guardado con éxito");
-    hideForm();
+    isBookFormEnabled(false);
     await showCatalog();
   } catch (error) {
     alert("Error al guardar el libro: " + error);
   }
 }
 
-addBookBttn.addEventListener("click", () => toggleBookFormVisibility(true));
-closeBookFormBttn.addEventListener("click", () => hideForm());
+const hideCatalog = (): void => {
+  bookList.innerHTML = "";
+  showCatalogBttn.style.display = "inline-block";
+  closeCatalogBttn.style.display = "none";
+};
+
+window.addEventListener("scroll", handleStickyHeader);
+
+addBookBttn.addEventListener("click", () => isBookFormEnabled(true));
+closeBookFormBttn.addEventListener("click", () => isBookFormEnabled(false));
 addBookForm.addEventListener("submit", handleFormSubmit);
 showCatalogBttn.addEventListener("click", showCatalog);
 closeCatalogBttn.addEventListener("click", hideCatalog);
