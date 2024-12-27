@@ -1,14 +1,16 @@
 [
   {
-    "id": 1,
-    "name": "María Patata",
-    "email": "mariapatata@example.com",
-    "registrationDate": "2024-12-22T12:00:00Z"
+    "id": "u1",
+    "name": "Juan Pérez",
+    "email": "juan.perez@example.com",
+    "registrationDate": "2024-12-27T12:00:00Z",
+    "type": "User"
   },
   {
-    "id": 2,
-    "name": "Luis Galleta",
-    "email": "luisgalleta@example.com",
-    "registrationDate": "2024-12-22T13:00:00Z"
+    "id": "u2",
+    "name": "Admin User",
+    "email": "admin@example.com",
+    "registrationDate": "2024-12-27T12:00:00Z",
+    "type": "Admin"
   }
 ]

@@ -1,9 +1,16 @@
 [
   {
-    "loanId": 1,
-    "userId": 1,
-    "bookId": 1,
-    "loanDate": "2024-12-22T14:00:00Z",
+    "id": "l1",
+    "bookId": "1a2b3c4d",
+    "userId": "u1",
+    "loanDate": "2024-12-01T12:00:00Z",
+    "returnDate": "2024-12-15T12:00:00Z"
+  },
+  {
+    "id": "l2",
+    "bookId": "3c4d5e6f",
+    "userId": "u1",
+    "loanDate": "2024-12-10T12:00:00Z",
     "returnDate": null
   }
 ]

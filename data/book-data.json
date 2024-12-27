@@ -1,5 +1,6 @@
 [
   {
+    "id": "1a2b3c4d",
     "title": "El Señor de los Anillos",
     "author": "J.R.R. Tolkien",
     "year": 1954,
@@ -7,6 +8,7 @@
     "genre": "Fantasía"
   },
   {
+    "id": "2b3c4d5e",
     "title": "1984",
     "author": "George Orwell",
     "year": 1949,
@@ -14,10 +16,11 @@
     "genre": "Distopía"
   },
   {
-    "title": "Prueba",
-    "author": "Mock",
-    "year": 123,
-    "copiesAvailable": 5,
-    "genre": ""
+    "id": "3c4d5e6f",
+    "title": "Cien Años de Soledad",
+    "author": "Gabriel García Márquez",
+    "year": 1967,
+    "copiesAvailable": 3,
+    "genre": "Realismo Mágico"
   }
 ]

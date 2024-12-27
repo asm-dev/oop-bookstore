@@ -1,6 +1,6 @@
 import "./styles.css";
 import { Book } from "./models/book-model";
-import { BookService } from "./services/book-service";
+import { BookDataService } from "./services/book-data-service";
 import { handleStickyHeader } from "./utils/sticky-header-handler";
 import { isBookFormEnabled } from "./utils/show-form";
 import { createBookCopiesRemovalForm } from "./utils/create-book-copies-removal-form";
@@ -9,6 +9,10 @@ import { createCloseCatalogButton } from "./utils/create-close-catalog-button";
 import { ApplicationError } from "./types/application-error";
 import { OperationSuccess } from "./types/operation-sucess";
 import { getCustomRemovalMessage } from "./utils/get-custom-removal-message";
+
+const bookCatalog = new BookDataService();
+let isEditing = false;
+let selectedBookId: string | null = null;
 
 const showCatalogButton = document.getElementById(
   "showCatalogBttn"
@@ -36,16 +40,20 @@ const closeCatalogButton = createCloseCatalogButton();
 
 showCatalogButton.insertAdjacentElement("afterend", closeCatalogButton);
 
-const getCatalogData = (): Promise<Book[]> => BookService.getAll();
+const getCatalogData = (): Promise<Book[]> => bookCatalog.getAllBooks();
 const closePopup = (): void => popup.classList.add("hidden");
 const restartCatalog = (): void => {
   bookList.innerHTML = "";
 };
-const displayCatalogButton = (): void => {
+const hideCatalog = (): void => {
+  restartCatalog();
+  displayShowCatalogButton();
+};
+const displayCloseCatalogButton = (): void => {
   showCatalogButton.style.display = "none";
   closeCatalogButton.style.display = "inline-block";
 };
-const displayCloseCatalogButton = (): void => {
+const displayShowCatalogButton = (): void => {
   showCatalogButton.style.display = "inline-block";
   closeCatalogButton.style.display = "none";
 };
@@ -64,16 +72,11 @@ async function showCatalog(): Promise<void> {
       bookList.appendChild(listItem);
     });
 
-    displayCatalogButton();
+    displayCloseCatalogButton();
   } catch (error) {
     alert(ApplicationError.LOAD_CATALOG);
   }
 }
-
-const hideCatalog = (): void => {
-  restartCatalog();
-  displayCloseCatalogButton();
-};
 
 function showDeletePopup(book: Book): void {
   deleteMessage.textContent = getCustomRemovalMessage(book);
@@ -89,66 +92,87 @@ function showDeletePopup(book: Book): void {
     confirmDelete.type = "submit";
     confirmDelete.textContent = "Borrar copias";
 
-    confirmDelete.onclick = async () => {
-      const selectedCopies = parseInt(
-        (document.getElementById("unitsToDelete") as HTMLInputElement).value,
-        10
-      );
-      const areSelectedCopiesValid =
-        selectedCopies >= 1 && selectedCopies < book.copiesAvailable;
-      const areSelectedCopiesSameThanAvailable =
-        selectedCopies === book.copiesAvailable;
-
-      if (areSelectedCopiesValid) {
-        try {
-          await BookService.saveBook({
-            ...book,
-            copiesAvailable: book.copiesAvailable - selectedCopies,
-          });
-          alert(OperationSuccess.DELETED_COPIES);
-          closePopup();
-          restartCatalog();
-          await showCatalog();
-        } catch (error) {
-          alert(ApplicationError.SAVE_COPIES);
-        }
-      } else if (areSelectedCopiesSameThanAvailable) {
-        deleteBook(book.title);
-      } else {
-        alert(
-          `Por favor, introduce un número válido entre 1 y ${book.copiesAvailable}.`
-        );
-      }
-    };
+    confirmDelete.onclick = () => handleDeleteCopies(book);
   } else {
     confirmDelete.textContent = "Borrar";
-    confirmDelete.onclick = async () => {
-      await deleteBook(book.title);
-    };
+    confirmDelete.onclick = () => handleDeleteBook(book);
   }
+}
+
+async function handleDeleteCopies(book: Book): Promise<void> {
+  const selectedCopies = getSelectedCopies();
+
+  if (isValidCopiesSelection(selectedCopies, book.copiesAvailable)) {
+    if (selectedCopies === book.copiesAvailable) {
+      await handleDeleteBook(book);
+    } else {
+      await handleRemoveBookCopies(book, selectedCopies);
+    }
+    closePopup();
+    restartCatalog();
+    await showCatalog();
+  } else {
+    alert(
+      `Por favor, introduce un número válido entre 1 y ${book.copiesAvailable}.`
+    );
+  }
+}
+
+const handleRemoveBookCopies = async (
+  book: Book,
+  copies: number
+): Promise<void> => {
+  try {
+    await removeCopiesFromBook(book, copies);
+    OperationSuccess.DELETED_COPIES;
+  } catch (error) {
+    ApplicationError.SAVE_COPIES;
+  }
+};
+
+const handleDeleteBook = async (book: Book): Promise<void> => {
+  try {
+    await deleteBook(book.title);
+    OperationSuccess.DELETED_BOOK;
+  } catch (error) {
+    ApplicationError.DELETE_BOOK;
+  }
+};
+
+const getSelectedCopies = (): number => {
+  return parseInt(
+    (document.getElementById("unitsToDelete") as HTMLInputElement).value,
+    10
+  );
+};
+
+const isValidCopiesSelection = (
+  selectedCopies: number,
+  availableCopies: number
+): boolean => {
+  return selectedCopies >= 1 && selectedCopies <= availableCopies;
+};
+
+async function removeCopiesFromBook(
+  book: Book,
+  selectedCopies: number
+): Promise<void> {
+  for (let i = 0; i < selectedCopies; i++) {
+    book.borrowCopy();
+  }
+
+  await bookCatalog.updateBook(book);
 }
 
 const deleteBook = async (bookTitle: string): Promise<void> => {
   try {
-    await BookService.deleteBook(bookTitle);
+    await bookCatalog.deleteBook(bookTitle);
     alert(OperationSuccess.DELETED_BOOK);
     closePopup();
     restartCatalog();
     await showCatalog();
   } catch (error) {
     alert(ApplicationError.DELETE_BOOK);
-  }
-};
-
-const saveBook = async (book: Book): Promise<void> => {
-  try {
-    await BookService.saveBook(book);
-    alert(OperationSuccess.SAVED_BOOK);
-    isBookFormEnabled(false);
-    restartCatalog();
-    await showCatalog();
-  } catch (error) {
-    alert(ApplicationError.SAVE_BOOK);
   }
 };
 
@@ -163,6 +187,8 @@ function fillBookForm(book: Book): void {
     book.genre || "";
 
   isBookFormEnabled(true);
+  isEditing = true;
+  selectedBookId = book.id;
 }
 
 async function handleFormSubmit(event: SubmitEvent): Promise<void> {
@@ -191,9 +217,31 @@ async function handleFormSubmit(event: SubmitEvent): Promise<void> {
     return;
   }
 
-  const book = new Book(title, author, year, copiesAvailable, genre);
+  if (!isEditing) {
+    try {
+      await bookCatalog.addBook(
+        new Book(title, author, year, copiesAvailable, genre)
+      );
+      alert(OperationSuccess.SAVED_BOOK);
+    } catch (error) {
+      alert(ApplicationError.SAVE_BOOK);
+    }
+  } else {
+    try {
+      await bookCatalog.updateBook(
+        new Book(title, author, year, copiesAvailable, genre, selectedBookId)
+      );
+      alert(OperationSuccess.UPDATED_BOOK);
+    } catch (error) {
+      alert(ApplicationError.UPDATE_BOOK);
+    }
+  }
 
-  saveBook(book);
+  isBookFormEnabled(false);
+  restartCatalog();
+  await showCatalog();
+  isEditing = false;
+  selectedBookId = null;
 }
 
 window.addEventListener("scroll", handleStickyHeader);
