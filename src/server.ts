@@ -5,14 +5,17 @@ import cors from "cors";
 import { fileURLToPath } from "url";
 import { Book } from "./domain/book";
 import { User, UserAdmin } from "./domain/user";
+import { Loan } from "./domain/loan";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3000;
+
 const BOOK_DATA = path.resolve(__dirname, "../data/book-data.json");
 const USER_DATA = path.resolve(__dirname, "../data/user-data.json");
+const LOAN_DATA = path.resolve(__dirname, "../data/loan-data.json");
 
 app.use(cors());
 app.use(express.json());
@@ -63,15 +66,15 @@ app.put("/api/books/:title", (req: Request, res: Response) => {
   try {
     const title = req.params.title;
     const updatedBook: Book = req.body;
-    const catalog = getData<Book>(BOOK_DATA);
+    const books = getData<Book>(BOOK_DATA);
 
-    const bookIndex = catalog.findIndex((book) => book.title === title);
+    const bookIndex = books.findIndex((book) => book.title === title);
     if (bookIndex === -1) {
       return res.status(404).json({ error: "El libro no existe." });
     }
 
-    catalog[bookIndex] = updatedBook;
-    saveData(BOOK_DATA, catalog);
+    books[bookIndex] = updatedBook;
+    saveData(BOOK_DATA, books);
     res.json(updatedBook);
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar el libro." });
@@ -81,10 +84,10 @@ app.put("/api/books/:title", (req: Request, res: Response) => {
 app.delete("/api/books/:title", (req: Request, res: Response) => {
   try {
     const title = req.params.title;
-    const catalog = getData<Book>(BOOK_DATA);
+    const books = getData<Book>(BOOK_DATA);
 
-    const filteredBooks = catalog.filter((book) => book.title !== title);
-    if (catalog.length === filteredBooks.length) {
+    const filteredBooks = books.filter((book) => book.title !== title);
+    if (books.length === filteredBooks.length) {
       return res.status(404).json({ error: "El libro no existe." });
     }
 
@@ -131,7 +134,7 @@ app.post("/api/login", (req: Request, res: Response) => {
     if (!user || user.password !== password) {
       return res
         .status(400)
-        .json({ error: "Usuario no encontrado o datos incorrectos" });
+        .json({ error: "No hemos podido encontrar el usuario" });
     }
 
     const isAdmin = user instanceof UserAdmin;
@@ -143,12 +146,83 @@ app.post("/api/login", (req: Request, res: Response) => {
     );
 
     return res.json({
-      message: "Inicio de sesión exitoso",
+      message: "Sesión iniciada correctamente",
       userName: user.name,
       isAdmin,
     });
   } catch (error) {
-    res.status(500).json({ error: "Error al iniciar sesión." });
+    res.status(500).json({ error: "Hubo un error al iniciar sesión." });
+  }
+});
+
+app.get("/api/loans", (req: Request, res: Response) => {
+  try {
+    const loans = getData<Loan>(LOAN_DATA);
+    res.json(loans);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error al leer los datos de los préstamos." });
+  }
+});
+
+app.post("/api/loans", (req: Request, res: Response) => {
+  try {
+    const newLoan: Loan = req.body;
+    const loans = getData<Loan>(LOAN_DATA);
+    const books = getData<Book>(BOOK_DATA);
+    const users = getData<User>(USER_DATA);
+
+    const book = books.find((b) => b.title === newLoan.bookId);
+    const user = users.find((u) => u.email === newLoan.userId);
+
+    if (!book || !user) {
+      return res
+        .status(400)
+        .json({ error: "El libro o el usuario no existen." });
+    }
+
+    if (book.copiesAvailable <= 0) {
+      return res
+        .status(400)
+        .json({ error: "No hay copias disponibles del libro." });
+    }
+
+    book.copiesAvailable -= 1;
+    loans.push(newLoan);
+
+    saveData(BOOK_DATA, books);
+    saveData(LOAN_DATA, loans);
+    res.status(201).json(newLoan);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear el préstamo." });
+  }
+});
+
+app.delete("/api/loans/:id", (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const loans = getData<Loan>(LOAN_DATA);
+    const books = getData<Book>(BOOK_DATA);
+
+    const loanIndex = loans.findIndex((loan) => loan.id === id);
+    if (loanIndex === -1) {
+      return res.status(404).json({ error: "El préstamo no existe." });
+    }
+
+    const loan = loans[loanIndex];
+    const book = books.find((b) => b.title === loan.bookId);
+
+    if (book) {
+      book.returnCopy();
+    }
+
+    loans.splice(loanIndex, 1);
+    saveData(BOOK_DATA, books);
+    saveData(LOAN_DATA, loans);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el préstamo." });
   }
 });
 

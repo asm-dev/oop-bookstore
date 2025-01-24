@@ -5,5 +5,7 @@ export interface UserModel {
   name: string;
   email: Email;
   password: string;
+  dateOfBirth: Date;
   registrationDate: Date;
+  isAdmin: boolean;
 }

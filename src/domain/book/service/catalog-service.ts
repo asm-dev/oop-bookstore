@@ -1,11 +1,18 @@
 import { API_ENDPOINTS } from "../../../config/api-endpoints";
 import { ApplicationError } from "../../../types/application-error";
 import { Book } from "../book";
-import { BookRepository } from "./book-repository-contract";
+
+export interface BookRepository {
+  getAllBooks(): Promise<Book[]>;
+  getBookById(id: string): Promise<Book | null>;
+  addBook(book: Book): Promise<void>;
+  updateBook(book: Book): Promise<void>;
+  deleteBook(id: string): Promise<void>;
+}
 
 const API_URL = API_ENDPOINTS.BOOKS;
 
-export class BookRepositoryService implements BookRepository {
+export class CatalogService implements BookRepository {
   public async getAllBooks(): Promise<Book[]> {
     const response = await fetch(API_URL);
 

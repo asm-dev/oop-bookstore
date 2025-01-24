@@ -5,24 +5,46 @@ import { UserModel } from "./user-model";
 export class User implements UserModel {
   public readonly id: string;
   public readonly registrationDate: Date;
+  public readonly isAdmin: boolean;
 
   constructor(
     public name: string,
     public email: Email,
     public password: string,
-    registrationDate?: Date
+    public dateOfBirth: Date,
+    registrationDate?: Date,
+    isAdmin: boolean = false
   ) {
     this.id = uuidv4();
     this.registrationDate = registrationDate || new Date();
+    this.isAdmin = isAdmin;
   }
 
-  public static create(name: string, email: string, password: string): User {
-    return new User(name, validateEmail(email), password);
+  public static create(
+    name: string,
+    email: string,
+    password: string,
+    dateOfBirth: Date
+  ): User {
+    return new User(name, validateEmail(email), password, dateOfBirth);
   }
 }
 
 export class UserAdmin extends User {
-  constructor(name: string, email: string, password: string) {
-    super(name, validateEmail(email), password);
+  constructor(
+    name: string,
+    email: string,
+    password: string,
+    dateOfBirth: Date,
+    registrationDate?: Date
+  ) {
+    super(
+      name,
+      validateEmail(email),
+      password,
+      dateOfBirth,
+      registrationDate,
+      true
+    );
   }
 }

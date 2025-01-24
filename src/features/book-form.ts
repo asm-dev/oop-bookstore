@@ -1,11 +1,11 @@
 import { Book } from "../domain/book";
-import { BookRepositoryService } from "../domain/book/service/book-repository-service";
+import { CatalogService } from "../domain/book/service/catalog-service";
 import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
 import { hideContainer, showContainer } from "../utils/show-and-hide-container";
 import { restartCatalog, showCatalog } from "./catalog";
 
-const catalogService = new BookRepositoryService();
+const catalogService = new CatalogService();
 const formContainer = document.getElementById("bookForm") as HTMLDivElement;
 const form = document.getElementById("addBookForm") as HTMLFormElement;
 

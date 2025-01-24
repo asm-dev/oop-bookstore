@@ -1,5 +1,4 @@
-import { Book } from "../domain/book";
-import { BookRepositoryService } from "../domain/book/service/book-repository-service";
+import { CatalogService } from "../domain/book/service/catalog-service";
 import { ApplicationError } from "../types/application-error";
 import { createListItemFromBook } from "../utils/create-list-item-from-book";
 import { fillBookForm } from "./book-form";
@@ -18,14 +17,10 @@ const bookList = document.getElementById("bookList") as HTMLUListElement;
 const showCatalogButton = document.getElementById(
   "showCatalogBttn"
 ) as HTMLButtonElement;
-const closeBookFormButton = document.getElementById(
-  "closeFormBttn"
-) as HTMLButtonElement;
 const closeCatalogButton = createCloseCatalogButton();
 showCatalogButton.insertAdjacentElement("afterend", closeCatalogButton);
 
-const catalogService = new BookRepositoryService();
-const getCatalogData = (): Promise<Book[]> => catalogService.getAllBooks();
+const catalogService = new CatalogService();
 
 const hideCatalog = (): void => {
   restartCatalog();
@@ -48,7 +43,7 @@ export const restartCatalog = (): void => {
 
 export async function showCatalog(): Promise<void> {
   try {
-    const catalog = await getCatalogData();
+    const catalog = await catalogService.getAllBooks();
 
     catalog.forEach((book) => {
       const listItem = createListItemFromBook(

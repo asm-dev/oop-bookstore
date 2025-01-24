@@ -1,16 +1,19 @@
 [
   {
-    "id": "u1",
-    "name": "Juan Pérez",
-    "email": "juan.perez@example.com",
-    "registrationDate": "2024-12-27T12:00:00Z",
-    "type": "User"
-  },
-  {
-    "id": "u2",
+    "id": "1",
     "name": "Admin User",
     "email": "admin@example.com",
-    "registrationDate": "2024-12-27T12:00:00Z",
-    "type": "Admin"
+    "password": "hashed_password_here",
+    "dateOfBirth": "1990-01-01T00:00:00.000Z",
+    "registrationDate": "2023-01-01T12:00:00.000Z",
+    "isAdmin": true
+  },
+  {
+    "id": "2",
+    "name": "Regular User",
+    "email": "user@example.com",
+    "password": "hashed_password_here",
+    "dateOfBirth": "1995-01-01T00:00:00.000Z",
+    "registrationDate": "2023-01-01T12:00:00.000Z"
   }
 ]

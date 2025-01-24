@@ -1,5 +1,5 @@
 import { Book } from "../domain/book";
-import { BookRepositoryService } from "../domain/book/service/book-repository-service";
+import { CatalogService } from "../domain/book/service/catalog-service";
 import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
 import { createBookCopiesRemovalForm } from "../utils/create-book-copies-removal-form";
@@ -19,7 +19,7 @@ const closePopupButton = document.getElementById(
 ) as HTMLButtonElement;
 const popup = document.getElementById("deletePopup") as HTMLDivElement;
 
-const catalog = new BookRepositoryService();
+const catalog = new CatalogService();
 
 export const getCustomRemovalMessage = (book: Book): string =>
   `¿Estás seguro de que quieres eliminar el libro "${
