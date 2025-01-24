@@ -6,15 +6,19 @@ import { hideContainer, showContainer } from "../utils/show-and-hide-container";
 import { restartCatalog, showCatalog } from "./catalog";
 
 const catalogService = new BookRepositoryService();
+const formContainer = document.getElementById("bookForm") as HTMLDivElement;
+const form = document.getElementById("addBookForm") as HTMLFormElement;
 
 let isEditing = false;
 let selectedBookId: string | null = null;
 
-export const isBookFormEnabled = (shouldShow: boolean): void => {
-  const formContainer = document.getElementById("bookForm") as HTMLDivElement;
-  return shouldShow
-    ? showContainer(formContainer)
-    : hideContainer(formContainer);
+export const enableForm = (): void => {
+  showContainer(formContainer);
+};
+
+export const disableAndResetForm = (): void => {
+  hideContainer(formContainer);
+  form.reset();
 };
 
 export function fillBookForm(book: Book): void {
@@ -27,7 +31,7 @@ export function fillBookForm(book: Book): void {
   (document.getElementById("genre") as HTMLInputElement).value =
     book.genre || "";
 
-  isBookFormEnabled(true);
+  enableForm();
   isEditing = true;
   selectedBookId = book.id;
 }
@@ -59,7 +63,6 @@ export async function handleFormSubmit(event: SubmitEvent): Promise<void> {
   }
 
   if (!isEditing) {
-    console.log("¿entro?");
     try {
       await catalogService.addBook(
         new Book(title, author, year, copiesAvailable, genre)
@@ -79,7 +82,7 @@ export async function handleFormSubmit(event: SubmitEvent): Promise<void> {
     }
   }
 
-  isBookFormEnabled(false);
+  disableAndResetForm();
   restartCatalog();
   await showCatalog();
   isEditing = false;
