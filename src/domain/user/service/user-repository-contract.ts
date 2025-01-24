@@ -1,4 +1,4 @@
-import { User } from "../model/user-model";
+import { User } from "../user";
 
 export interface UserRepository {
   addUser(user: User): void;

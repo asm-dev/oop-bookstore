@@ -17,8 +17,9 @@ const deleteMessage = document.getElementById(
 const closePopupButton = document.getElementById(
   "closePopup"
 ) as HTMLButtonElement;
+const popup = document.getElementById("deletePopup") as HTMLDivElement;
 
-const catalogService = new BookRepositoryService();
+const catalog = new BookRepositoryService();
 
 export const getCustomRemovalMessage = (book: Book): string =>
   `¿Estás seguro de que quieres eliminar el libro "${
@@ -27,12 +28,11 @@ export const getCustomRemovalMessage = (book: Book): string =>
     book.copiesAvailable === 1 ? "copia disponible." : "copias disponibles."
   }`;
 
-const popup = document.getElementById("deletePopup") as HTMLDivElement;
 const closePopup = (): void => popup.classList.add("hidden");
 
 const deleteBook = async (bookTitle: string): Promise<void> => {
   try {
-    await catalogService.deleteBook(bookTitle);
+    await catalog.deleteBook(bookTitle);
     alert(OperationSuccess.DELETED_BOOK);
     closePopup();
     restartCatalog();
@@ -72,7 +72,7 @@ export function showDeletePopup(book: Book): void {
   }
 }
 
-const getSelectedCopies = (): number => {
+const getCopiesToBorrow = (): number => {
   return parseInt(
     (document.getElementById("unitsToDelete") as HTMLInputElement).value,
     10
@@ -86,17 +86,13 @@ const isValidCopiesSelection = (
   return selectedCopies >= 1 && selectedCopies <= availableCopies;
 };
 
-async function removeCopiesFromBook(book: Book, copies: number): Promise<void> {
-  book.borrow(copies);
-  await catalogService.updateBook(book);
-}
-
-const handleRemoveBookCopies = async (
+const borrowCopyFromBook = async (
   book: Book,
   copies: number
 ): Promise<void> => {
   try {
-    await removeCopiesFromBook(book, copies);
+    book.borrow(copies);
+    await catalog.updateBook(book);
     OperationSuccess.DELETED_COPIES;
   } catch (error) {
     ApplicationError.SAVE_COPIES;
@@ -104,13 +100,13 @@ const handleRemoveBookCopies = async (
 };
 
 async function handleDeleteCopies(book: Book): Promise<void> {
-  const selectedCopies = getSelectedCopies();
+  const selectedCopies = getCopiesToBorrow();
 
   if (isValidCopiesSelection(selectedCopies, book.copiesAvailable)) {
     if (selectedCopies === book.copiesAvailable) {
       await handleDeleteBook(book);
     } else {
-      await handleRemoveBookCopies(book, selectedCopies);
+      await borrowCopyFromBook(book, selectedCopies);
     }
     closePopup();
     restartCatalog();

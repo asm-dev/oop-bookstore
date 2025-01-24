@@ -1,15 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import { ApplicationError } from "../../../types/application-error";
-import { User } from "../../user/model/user-model";
-import { Book } from "../../book";
-
-export interface LoanModel {
-  id: string;
-  bookId: string;
-  userId: string;
-  loanDate: Date;
-  returnDate?: Date;
-}
+import { ApplicationError } from "../../types/application-error";
+import { User } from "../user/user";
+import { Book } from "../book";
+import { LoanModel } from "./loan-model";
 
 export class Loan implements LoanModel {
   public readonly id: string;

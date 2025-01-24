@@ -1,12 +1,7 @@
-import { UUIDTypes, v4 as uuidv4 } from "uuid";
-import { Email, validateEmail } from "../../../types/email-type";
+import { v4 as uuidv4 } from "uuid";
+import { Email, validateEmail } from "../../types/email-type";
+import { UserModel } from "./user-model";
 
-export interface UserModel {
-  id: string;
-  name: string;
-  email: Email;
-  registrationDate: Date;
-}
 export class User implements UserModel {
   public readonly id: string;
   public readonly registrationDate: Date;

@@ -1,4 +1,4 @@
-import { Loan } from "../model/loan-model";
+import { Loan } from "../loan";
 
 export interface LoanRepository {
   addLoan(loan: Loan): void;
