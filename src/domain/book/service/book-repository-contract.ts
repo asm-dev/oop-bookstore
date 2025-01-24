@@ -1,4 +1,4 @@
-import { Book } from "../../models/book-model";
+import { Book } from "../model/book-model";
 
 export interface BookRepository {
   getAllBooks(): Promise<Book[]>;

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { ApplicationError } from "../types/application-error";
+import { ApplicationError } from "../../../types/application-error";
 
 export interface BookModel {
   readonly id: string;

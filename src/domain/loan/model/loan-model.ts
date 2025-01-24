@@ -1,7 +1,8 @@
-import { UUIDTypes, v4 as uuidv4 } from "uuid";
-import { User } from "./user-model";
-import { Book } from "./book-model";
-import { ApplicationError } from "../types/application-error";
+import { v4 as uuidv4 } from "uuid";
+import { ApplicationError } from "../../../types/application-error";
+import { Book } from "../../book/model/book-model";
+import { User } from "../../user/model/user-model";
+
 export interface LoanModel {
   id: string;
   bookId: string;
@@ -26,7 +27,7 @@ export class Loan implements LoanModel {
     this.returnDate = returnDate;
   }
 
-  public static create(book: Book, user: User): Loan {
+  public static borrowBook(book: Book, user: User): Loan {
     book.borrowCopy();
     return new Loan(book.id, user.id);
   }

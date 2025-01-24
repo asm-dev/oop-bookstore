@@ -1,7 +1,7 @@
-import { Book } from "../models/book-model";
-import { ApplicationError } from "../types/application-error";
-import { BookRepository } from "./contracts/book-repository-contract";
-import { API_ENDPOINTS } from "../config";
+import { API_ENDPOINTS } from "../../../config/api-endpoints";
+import { ApplicationError } from "../../../types/application-error";
+import { Book } from "../model/book-model";
+import { BookRepository } from "./book-repository-contract";
 
 const API_URL = API_ENDPOINTS.BOOKS;
 
@@ -36,6 +36,7 @@ export class BookDataService implements BookRepository {
   }
 
   public async addBook(book: Book): Promise<void> {
+    console.log("paso por aqui");
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -43,18 +44,6 @@ export class BookDataService implements BookRepository {
     });
 
     if (!response.ok) throw new Error(ApplicationError.ADD_BOOK);
-
-    const data = await response.json();
-    return data.map(
-      (book: any) =>
-        new Book(
-          book.title,
-          book.author,
-          book.year,
-          book.copiesAvailable,
-          book.genre
-        )
-    );
   }
 
   public async updateBook(book: Book): Promise<void> {
@@ -65,8 +54,6 @@ export class BookDataService implements BookRepository {
     });
 
     if (!response.ok) throw new Error(ApplicationError.UPDATE_BOOK);
-
-    return response.json();
   }
 
   public async deleteBook(title: string): Promise<void> {

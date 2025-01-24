@@ -16,11 +16,11 @@
     "genre": "Distopía"
   },
   {
-    "id": "3c4d5e6f",
     "title": "Cien Años de Soledad",
     "author": "Gabriel García Márquez",
     "year": 1967,
-    "copiesAvailable": 3,
-    "genre": "Realismo Mágico"
+    "copiesAvailable": 2,
+    "genre": "Realismo Mágico",
+    "id": "3c4d5e6f"
   }
 ]
