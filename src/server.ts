@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
-import { Book } from "./domain/book/model/book-model";
+import { Book } from "./domain/book";
 
 // TODO: refactor to allow user and loan endpoints
 

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { ApplicationError } from "../../../types/application-error";
-import { Book } from "../../book/model/book-model";
 import { User } from "../../user/model/user-model";
+import { Book } from "../../book";
 
 export interface LoanModel {
   id: string;
@@ -28,7 +28,7 @@ export class Loan implements LoanModel {
   }
 
   public static borrowBook(book: Book, user: User): Loan {
-    book.borrowCopy();
+    book.borrow(1);
     return new Loan(book.id, user.id);
   }
 

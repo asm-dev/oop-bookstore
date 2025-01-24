@@ -1,5 +1,5 @@
-import { Book } from "../domain/book/model/book-model";
-import { BookDataService } from "../domain/book/service/book-data-service";
+import { Book } from "../domain/book";
+import { BookRepositoryService } from "../domain/book/service/book-repository-service";
 import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
 import { createBookCopiesRemovalForm } from "../utils/create-book-copies-removal-form";
@@ -18,7 +18,7 @@ const closePopupButton = document.getElementById(
   "closePopup"
 ) as HTMLButtonElement;
 
-const catalogService = new BookDataService();
+const catalogService = new BookRepositoryService();
 
 export const getCustomRemovalMessage = (book: Book): string =>
   `¿Estás seguro de que quieres eliminar el libro "${
@@ -86,14 +86,8 @@ const isValidCopiesSelection = (
   return selectedCopies >= 1 && selectedCopies <= availableCopies;
 };
 
-async function removeCopiesFromBook(
-  book: Book,
-  selectedCopies: number
-): Promise<void> {
-  for (let i = 0; i < selectedCopies; i++) {
-    book.borrowCopy();
-  }
-
+async function removeCopiesFromBook(book: Book, copies: number): Promise<void> {
+  book.borrow(copies);
   await catalogService.updateBook(book);
 }
 

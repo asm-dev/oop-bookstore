@@ -1,5 +1,5 @@
-import { Book } from "../domain/book/model/book-model";
-import { BookDataService } from "../domain/book/service/book-data-service";
+import { Book } from "../domain/book";
+import { BookRepositoryService } from "../domain/book/service/book-repository-service";
 import { ApplicationError } from "../types/application-error";
 import { createListItemFromBook } from "../utils/create-list-item-from-book";
 import { fillBookForm } from "./book-form";
@@ -24,7 +24,7 @@ const closeBookFormButton = document.getElementById(
 const closeCatalogButton = createCloseCatalogButton();
 showCatalogButton.insertAdjacentElement("afterend", closeCatalogButton);
 
-const catalogService = new BookDataService();
+const catalogService = new BookRepositoryService();
 const getCatalogData = (): Promise<Book[]> => catalogService.getAllBooks();
 
 const hideCatalog = (): void => {

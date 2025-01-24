@@ -1,4 +1,4 @@
-import { Book } from "../domain/book/model/book-model";
+import { Book } from "../domain/book";
 
 const createLink = (
   callback: Function,

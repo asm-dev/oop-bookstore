@@ -1,11 +1,11 @@
 import { API_ENDPOINTS } from "../../../config/api-endpoints";
 import { ApplicationError } from "../../../types/application-error";
-import { Book } from "../model/book-model";
+import { Book } from "../book";
 import { BookRepository } from "./book-repository-contract";
 
 const API_URL = API_ENDPOINTS.BOOKS;
 
-export class BookDataService implements BookRepository {
+export class BookRepositoryService implements BookRepository {
   public async getAllBooks(): Promise<Book[]> {
     const response = await fetch(API_URL);
 
@@ -24,19 +24,19 @@ export class BookDataService implements BookRepository {
       throw new Error(ApplicationError.GET_BOOK);
     }
 
-    const bookData = await response.json();
+    const retrievedBook = await response.json();
+
     return new Book(
-      bookData.title,
-      bookData.author,
-      bookData.year,
-      bookData.copiesAvailable,
-      bookData.genre,
-      bookData.id
+      retrievedBook.title,
+      retrievedBook.author,
+      retrievedBook.year,
+      retrievedBook.copiesAvailable,
+      retrievedBook.genre,
+      retrievedBook.id
     );
   }
 
   public async addBook(book: Book): Promise<void> {
-    console.log("paso por aqui");
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

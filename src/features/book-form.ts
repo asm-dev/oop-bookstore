@@ -1,11 +1,11 @@
-import { Book } from "../domain/book/model/book-model";
-import { BookDataService } from "../domain/book/service/book-data-service";
+import { Book } from "../domain/book";
+import { BookRepositoryService } from "../domain/book/service/book-repository-service";
 import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
 import { hideContainer, showContainer } from "../utils/show-and-hide-container";
 import { restartCatalog, showCatalog } from "./catalog";
 
-const catalogService = new BookDataService();
+const catalogService = new BookRepositoryService();
 
 let isEditing = false;
 let selectedBookId: string | null = null;

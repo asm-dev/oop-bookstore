@@ -1,14 +1,6 @@
+import { BookModel } from "./book-model";
 import { v4 as uuidv4 } from "uuid";
-import { ApplicationError } from "../../../types/application-error";
-
-export interface BookModel {
-  readonly id: string;
-  title: string;
-  author: string;
-  year: number;
-  copiesAvailable: number;
-  genre?: string;
-}
+import { ApplicationError } from "../../types/application-error";
 
 export class Book implements BookModel {
   constructor(
@@ -24,11 +16,12 @@ export class Book implements BookModel {
     }
   }
 
-  public borrowCopy(): void {
+  public borrow(copiesToDelete: number): void {
     if (this.copiesAvailable <= 0) {
       throw new Error(ApplicationError.NO_COPIES_AVAILABLE);
     }
-    this.copiesAvailable--;
+    const remainingCopies = this.copiesAvailable - copiesToDelete;
+    this.copiesAvailable = remainingCopies;
   }
 
   public returnCopy(): void {
