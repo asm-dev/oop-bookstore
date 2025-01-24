@@ -9,21 +9,20 @@ export class User implements UserModel {
   constructor(
     public name: string,
     public email: Email,
+    public password: string,
     registrationDate?: Date
   ) {
     this.id = uuidv4();
     this.registrationDate = registrationDate || new Date();
   }
 
-  public static create(name: string, email: string): User {
-    // #TODO: el email deberia validarse en el constructor de la clase
-    return new User(name, validateEmail(email));
+  public static create(name: string, email: string, password: string): User {
+    return new User(name, validateEmail(email), password);
   }
 }
 
 export class UserAdmin extends User {
-  // #TODO: revisar
-  constructor(name: string, email: string) {
-    super(name, validateEmail(email));
+  constructor(name: string, email: string, password: string) {
+    super(name, validateEmail(email), password);
   }
 }
