@@ -107,6 +107,23 @@ app.get("/api/users", (req: Request, res: Response) => {
   }
 });
 
+app.get("/api/users/:email", (req: Request, res: Response) => {
+  try {
+    const email = req.params.email;
+    const users = getData<User>(USER_DATA);
+    const user = users.find((user) => user.email === email);
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    res.status(500).json({ error: "Error al obtener el usuario" });
+  }
+});
+
 app.post("/api/users", (req: Request, res: Response) => {
   try {
     const newUser: User = req.body;
@@ -121,37 +138,6 @@ app.post("/api/users", (req: Request, res: Response) => {
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ error: "Error al agregar el usuario." });
-  }
-});
-
-app.post("/api/login", (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  try {
-    const users = getData<User>(USER_DATA);
-    const user = users.find((user) => user.email === email);
-
-    if (!user || user.password !== password) {
-      return res
-        .status(400)
-        .json({ error: "No hemos podido encontrar el usuario" });
-    }
-
-    const isAdmin = user instanceof UserAdmin;
-
-    res.cookie(
-      "user",
-      JSON.stringify({ id: user.id, name: user.name, isAdmin }),
-      { maxAge: 3600000, httpOnly: true }
-    );
-
-    return res.json({
-      message: "Sesión iniciada correctamente",
-      userName: user.name,
-      isAdmin,
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Hubo un error al iniciar sesión." });
   }
 });
 

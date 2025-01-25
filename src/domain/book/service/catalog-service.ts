@@ -4,7 +4,6 @@ import { Book } from "../book";
 
 export interface BookRepository {
   getAllBooks(): Promise<Book[]>;
-  getBookById(id: string): Promise<Book | null>;
   addBook(book: Book): Promise<void>;
   updateBook(book: Book): Promise<void>;
   deleteBook(id: string): Promise<void>;
@@ -19,28 +18,6 @@ export class CatalogService implements BookRepository {
     if (!response.ok) throw new Error(ApplicationError.GET_BOOKS);
 
     return response.json();
-  }
-
-  public async getBookById(id: string): Promise<Book | null> {
-    const response = await fetch(`${API_URL}/${id}`);
-
-    if (!response.ok) {
-      if (response.status === 404) {
-        return null;
-      }
-      throw new Error(ApplicationError.GET_BOOK);
-    }
-
-    const retrievedBook = await response.json();
-
-    return new Book(
-      retrievedBook.title,
-      retrievedBook.author,
-      retrievedBook.year,
-      retrievedBook.copiesAvailable,
-      retrievedBook.genre,
-      retrievedBook.id
-    );
   }
 
   public async addBook(book: Book): Promise<void> {

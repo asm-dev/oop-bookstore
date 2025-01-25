@@ -44,34 +44,42 @@ export class UserRepositoryService implements UserRepositoryModel {
   }
 
   public async getUserByEmail(email: string): Promise<User | undefined> {
-    const response = await fetch(`${API_URL}/${email}`);
+    try {
+      const response = await fetch(`${API_URL}/${email}`);
 
-    if (!response.ok) {
-      if (response.status === 404) {
-        return null;
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.error(`${ApplicationError.GET_USER_BY_EMAIL}`);
+        }
+        throw new Error(ApplicationError.GET_USER_BY_EMAIL);
       }
-      throw new Error(ApplicationError.GET_USER_BY_EMAIL);
+
+      const user = await response.json();
+
+      return new User(
+        user.name,
+        user.email,
+        user.password,
+        new Date(user.dateOfBirth),
+        new Date(user.registrationDate),
+        user.isAdmin
+      );
+    } catch (error) {
+      throw error;
     }
-
-    const user = await response.json();
-
-    return new User(
-      user.name,
-      user.email,
-      user.password,
-      user.dateOfBirth,
-      user.registrationDate,
-      user.isAdmin
-    );
   }
 
   public async login(
     email: string,
     password: string
   ): Promise<User | undefined> {
-    const user = await this.getUserByEmail(email);
-    if (user && user.password === password) {
-      return user;
+    try {
+      const user = await this.getUserByEmail(email);
+      if (user && user.password === password) {
+        return user;
+      }
+    } catch (error) {
+      console.error(`${ApplicationError.LOGIN}: ${error}`);
     }
   }
 }
