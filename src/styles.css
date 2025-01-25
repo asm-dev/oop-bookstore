@@ -234,6 +234,18 @@ main {
   transition: color 0.3s ease;
 }
 
+#deletePopup {
+  #actionButtonContainer {
+    display: flex;
+    justify-content: end;
+    gap: 1em;
+  }
+
+  #unitsToDelete {
+    margin-top: 1em;
+  }
+}
+
 .catalog-link-add,
 .catalog-link-delete {
   padding-left: 1rem;
