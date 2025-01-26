@@ -305,7 +305,8 @@ main {
   z-index: 1000;
 }
 
-#loginButton {
+#loginButton,
+.username {
   position: absolute;
   right: 1em;
 }

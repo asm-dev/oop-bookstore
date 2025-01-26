@@ -3,14 +3,14 @@
     "id": "1",
     "name": "Admin User",
     "email": "admin@example.com",
-    "password": "hashed_password_here",
+    "password": "admin",
     "dateOfBirth": "1990-01-01T00:00:00.000Z",
     "registrationDate": "2023-01-01T12:00:00.000Z",
     "isAdmin": true
   },
   {
     "id": "2",
-    "name": "Regular User",
+    "name": "Mister Patata",
     "email": "user@example.com",
     "password": "potato",
     "dateOfBirth": "1995-01-01T00:00:00.000Z",

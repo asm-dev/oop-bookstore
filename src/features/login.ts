@@ -17,14 +17,23 @@ const createUserButton = document.getElementById(
 
 const userData = new UserRepositoryService();
 
-export const showLoginPopup = () => {
+export const showLoginPopup = (): void => {
   loginPopup.classList.remove("hidden");
   popupOverlay.classList.remove("hidden");
 };
 
-const closeLoginPopup = () => {
+const closeLoginPopup = (): void => {
   loginPopup.classList.add("hidden");
   popupOverlay.classList.add("hidden");
+};
+
+const displayUserName = (username: string): void => {
+  const container = document.createElement("div");
+  const span = document.createElement("span");
+  span.textContent = username;
+  container.appendChild(span);
+  container.classList.add("username");
+  loginButton.replaceWith(container);
 };
 
 loginSubmit.addEventListener("click", async (event) => {
@@ -37,6 +46,8 @@ loginSubmit.addEventListener("click", async (event) => {
     if (user) {
       alert(`Bienvenido ${user.name}`);
       closeLoginPopup();
+      displayUserName(user.name);
+      sessionStorage.setItem("authenticatedUser", JSON.stringify(user));
     } else {
       alert("Credenciales incorrectas.");
     }

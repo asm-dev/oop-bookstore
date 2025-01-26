@@ -1,26 +1,5 @@
 import { Book } from "../domain/book";
-
-const createLink = (
-  callback: Function,
-  text: string,
-  customClass: string
-): HTMLAnchorElement => {
-  const link = document.createElement("a");
-  link.href = "#";
-  link.textContent = text;
-  link.classList.add(customClass);
-  link.addEventListener("click", (event) => {
-    event.preventDefault();
-    callback();
-  });
-
-  return link;
-};
-
-const createEditLink = (cb: Function): HTMLAnchorElement =>
-  createLink(cb, "Editar", "catalog-link-add");
-const createDeleteLink = (cb: Function): HTMLAnchorElement =>
-  createLink(cb, "Eliminar", "catalog-link-delete");
+import { CatalogLinks } from "../features/catalog-links";
 
 export const createListItemFromBook = (
   book: Book,
@@ -30,14 +9,29 @@ export const createListItemFromBook = (
   const listItem = document.createElement("li");
   listItem.textContent = `${book.title} - ${book.author} (${book.year})`;
 
-  const editLink = createEditLink(editCb);
-  const deleteLink = createDeleteLink(deleteCb);
-
   const buttonContainer = document.createElement("div");
   buttonContainer.classList.add("button-container");
-  buttonContainer.append(editLink, deleteLink);
+
+  const storedUser = sessionStorage.getItem("authenticatedUser");
+
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+
+    if (!user.isAdmin) {
+      const borrowLink = document.createElement("a");
+      borrowLink.textContent = "Tomar prestado";
+      borrowLink.href = "#";
+      borrowLink.onclick = () => alert("Pendiente de implementar");
+      buttonContainer.appendChild(borrowLink);
+    }
+
+    if (user.isAdmin) {
+      const editLink = CatalogLinks.createEditLink(editCb);
+      const deleteLink = CatalogLinks.createDeleteLink(deleteCb);
+      buttonContainer.append(editLink, deleteLink);
+    }
+  }
 
   listItem.appendChild(buttonContainer);
-
   return listItem;
 };
