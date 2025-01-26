@@ -15,4 +15,5 @@ export enum ApplicationError {
   SAVE_COPIES = "Error al actualizar las copias disponibles",
   SAVE_USER = "No hemos podido guardar el usuario",
   UPDATE_BOOK = "Ha habido un error al actualizar el libro",
+  WRONG_CREDENTIALS = "Credenciales incorrectas",
 }

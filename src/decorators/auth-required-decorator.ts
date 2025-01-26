@@ -1,3 +1,9 @@
+import {
+  getStoredUser,
+  isAdmin,
+  isUserAuthenticated,
+} from "../utils/user-auth";
+
 export function AuthRequired(requireAdmin: boolean = false) {
   return function (
     target: any,
@@ -7,16 +13,12 @@ export function AuthRequired(requireAdmin: boolean = false) {
     const originalMethod = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
-      const storedUser = sessionStorage.getItem("authenticatedUser");
-
-      if (!storedUser) {
+      if (!isUserAuthenticated()) {
         alert("Debes iniciar sesión para realizar esta acción.");
         return;
       }
 
-      const user = JSON.parse(storedUser);
-
-      if (requireAdmin && !user.isAdmin) {
+      if (requireAdmin && !isAdmin()) {
         alert("No tienes permisos para realizar esta acción.");
         return;
       }
