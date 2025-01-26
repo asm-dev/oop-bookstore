@@ -1,5 +1,12 @@
 import { UserRepositoryService } from "../domain/user/service/user-repository";
 import { ApplicationError } from "../types/application-error";
+import { toggleAddButtonVisibility } from "../utils/toggle-add-book-button-visibility";
+import {
+  getStoredUser,
+  greetUser,
+  isUserAuthenticated,
+  storeUser,
+} from "../utils/user-auth";
 
 const loginButton = document.getElementById("loginButton") as HTMLButtonElement;
 const loginPopup = document.getElementById("loginPopup") as HTMLDivElement;
@@ -18,7 +25,7 @@ const createUserButton = document.getElementById(
 
 const userData = new UserRepositoryService();
 
-export const showLoginPopup = (): void => {
+export const onLoginButtonClick = (): void => {
   loginPopup.classList.remove("hidden");
   popupOverlay.classList.remove("hidden");
 };
@@ -28,7 +35,7 @@ const closeLoginPopup = (): void => {
   popupOverlay.classList.add("hidden");
 };
 
-const displayUserNameAndLogoutButton = (username: string): void => {
+const displayUserAndLogout = (username: string): void => {
   const container = document.createElement("div");
   container.classList.add("user-info-container");
 
@@ -43,6 +50,7 @@ const displayUserNameAndLogoutButton = (username: string): void => {
   logoutButton.addEventListener("click", () => {
     sessionStorage.removeItem("authenticatedUser");
     location.reload();
+    toggleAddButtonVisibility();
   });
 
   container.appendChild(usernameSpan);
@@ -51,11 +59,10 @@ const displayUserNameAndLogoutButton = (username: string): void => {
   loginButton.replaceWith(container);
 };
 
-const checkAuthentication = (): void => {
-  const storedUser = sessionStorage.getItem("authenticatedUser");
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    displayUserNameAndLogoutButton(user.name);
+const handleAuth = (): void => {
+  if (isUserAuthenticated()) {
+    const user = getStoredUser();
+    displayUserAndLogout(user.name);
   } else {
     loginButton.textContent = "Iniciar sesión";
   }
@@ -69,10 +76,11 @@ loginSubmit.addEventListener("click", async (event) => {
   try {
     const user = await userData.login(email, password);
     if (user) {
-      alert(`Bienvenido ${user.name}`);
+      greetUser(user.name);
+      storeUser(user);
       closeLoginPopup();
-      sessionStorage.setItem("authenticatedUser", JSON.stringify(user));
-      displayUserNameAndLogoutButton(user.name);
+      displayUserAndLogout(user.name);
+      toggleAddButtonVisibility();
     } else {
       alert(`${ApplicationError.WRONG_CREDENTIALS}`);
     }
@@ -85,8 +93,8 @@ createUserButton.addEventListener("click", () => {
   alert("Pendiente de implementación");
 });
 
-loginButton.addEventListener("click", showLoginPopup);
+loginButton.addEventListener("click", onLoginButtonClick);
 closePopupButton.addEventListener("click", closeLoginPopup);
 popupOverlay.addEventListener("click", closeLoginPopup);
 
-document.addEventListener("DOMContentLoaded", checkAuthentication);
+document.addEventListener("DOMContentLoaded", handleAuth);

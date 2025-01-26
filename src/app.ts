@@ -1,13 +1,13 @@
 import "./styles.css";
 import {
-  enableForm,
+  onBookFormClick,
+  onAddBookButtonClick,
   disableAndResetForm,
-  handleFormSubmit,
 } from "./features/book-form";
 import { showCatalog } from "./features/catalog";
 import { handleStickyHeader } from "./utils/sticky-header-handler";
-import { showLoginPopup } from "./features/login";
-import { isAdmin, isUserAuthenticated } from "./utils/user-auth";
+import { onLoginButtonClick } from "./features/login";
+import { toggleAddButtonVisibility } from "./utils/toggle-add-book-button-visibility";
 
 const loginButton = document.getElementById("loginButton") as HTMLButtonElement;
 const addBookBttn = document.getElementById("addBookBttn") as HTMLButtonElement;
@@ -20,15 +20,12 @@ const closeBookFormButton = document.getElementById(
 ) as HTMLButtonElement;
 
 window.addEventListener("scroll", handleStickyHeader);
+window.addEventListener("load", () => {
+  toggleAddButtonVisibility();
+});
 
-bookForm.addEventListener("submit", handleFormSubmit);
-loginButton.addEventListener("click", showLoginPopup);
-addBookBttn.addEventListener("click", () => enableForm());
-closeBookFormButton.addEventListener("click", () => disableAndResetForm());
+bookForm.addEventListener("submit", onBookFormClick);
+loginButton.addEventListener("click", onLoginButtonClick);
+addBookBttn.addEventListener("click", onAddBookButtonClick);
+closeBookFormButton.addEventListener("click", disableAndResetForm);
 showCatalogButton.addEventListener("click", showCatalog);
-
-if (isAdmin()) {
-  addBookBttn.classList.remove("hidden");
-} else {
-  addBookBttn.classList.add("hidden");
-}

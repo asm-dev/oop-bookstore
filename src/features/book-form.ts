@@ -12,7 +12,9 @@ const form = document.getElementById("addBookForm") as HTMLFormElement;
 let isEditing = false;
 let selectedBookId: string | null = null;
 
-export const enableForm = (): void => {
+export const onAddBookButtonClick = (): void => enableForm();
+
+const enableForm = (): void => {
   showContainer(formContainer);
 };
 
@@ -36,7 +38,7 @@ export function fillBookForm(book: Book): void {
   selectedBookId = book.id;
 }
 
-export async function handleFormSubmit(event: SubmitEvent): Promise<void> {
+export async function onBookFormClick(event: SubmitEvent): Promise<void> {
   event.preventDefault();
 
   const title = (

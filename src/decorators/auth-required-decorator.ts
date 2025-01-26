@@ -1,8 +1,4 @@
-import {
-  getStoredUser,
-  isAdmin,
-  isUserAuthenticated,
-} from "../utils/user-auth";
+import { isAdminUser, isUserAuthenticated } from "../utils/user-auth";
 
 export function AuthRequired(requireAdmin: boolean = false) {
   return function (
@@ -18,7 +14,7 @@ export function AuthRequired(requireAdmin: boolean = false) {
         return;
       }
 
-      if (requireAdmin && !isAdmin()) {
+      if (requireAdmin && !isAdminUser()) {
         alert("No tienes permisos para realizar esta acción.");
         return;
       }
