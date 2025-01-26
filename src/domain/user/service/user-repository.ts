@@ -1,6 +1,7 @@
 import { User } from "../user";
 import { ApplicationError } from "../../../types/application-error";
 import { API_ENDPOINTS } from "../../../config/api-endpoints";
+import { Loading } from "../../../decorators";
 
 export interface UserRepositoryModel {
   addUser(user: User): Promise<void>;
@@ -11,6 +12,7 @@ export interface UserRepositoryModel {
 
 const API_URL = API_ENDPOINTS.USERS;
 export class UserRepositoryService implements UserRepositoryModel {
+  @Loading
   public async addUser(user: User): Promise<void> {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -21,6 +23,7 @@ export class UserRepositoryService implements UserRepositoryModel {
     if (!response.ok) throw new Error(ApplicationError.SAVE_USER);
   }
 
+  @Loading
   public async getUserById(userId: string): Promise<User | undefined> {
     const response = await fetch(`${API_URL}/${userId}`);
 
@@ -43,6 +46,7 @@ export class UserRepositoryService implements UserRepositoryModel {
     );
   }
 
+  @Loading
   public async getUserByEmail(email: string): Promise<User | undefined> {
     try {
       const response = await fetch(`${API_URL}/${email}`);
@@ -69,6 +73,7 @@ export class UserRepositoryService implements UserRepositoryModel {
     }
   }
 
+  @Loading
   public async login(
     email: string,
     password: string

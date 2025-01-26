@@ -1,4 +1,5 @@
 import { API_ENDPOINTS } from "../../../config/api-endpoints";
+import { Loading } from "../../../decorators";
 import { ApplicationError } from "../../../types/application-error";
 import { Book } from "../book";
 
@@ -12,6 +13,7 @@ export interface BookRepository {
 const API_URL = API_ENDPOINTS.BOOKS;
 
 export class CatalogService implements BookRepository {
+  @Loading
   public async getAllBooks(): Promise<Book[]> {
     const response = await fetch(API_URL);
 
@@ -20,6 +22,7 @@ export class CatalogService implements BookRepository {
     return response.json();
   }
 
+  @Loading
   public async addBook(book: Book): Promise<void> {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -30,6 +33,7 @@ export class CatalogService implements BookRepository {
     if (!response.ok) throw new Error(ApplicationError.ADD_BOOK);
   }
 
+  @Loading
   public async updateBook(book: Book): Promise<void> {
     const response = await fetch(`${API_URL}/${book.title}`, {
       method: "PUT",
@@ -40,6 +44,7 @@ export class CatalogService implements BookRepository {
     if (!response.ok) throw new Error(ApplicationError.UPDATE_BOOK);
   }
 
+  @Loading
   public async deleteBook(title: string): Promise<void> {
     const response = await fetch(`${API_URL}/${title}`, {
       method: "DELETE",
