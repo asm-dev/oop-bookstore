@@ -1,6 +1,6 @@
 [
   {
-    "id": "1a2b3c4d",
+    "id": "1f12e6a2-a987-4c8f-b0f7-b227d8f92727",
     "title": "El Señor de los Anillos",
     "author": "J.R.R. Tolkien",
     "year": 1954,
@@ -8,7 +8,7 @@
     "genre": "Fantasía"
   },
   {
-    "id": "2b3c4d5e",
+    "id": "2e2c9b5f-cfbf-4d85-92f9-88da467a6b25",
     "title": "1984",
     "author": "George Orwell",
     "year": 1949,
@@ -16,11 +16,67 @@
     "genre": "Distopía"
   },
   {
+    "id": "3c7f8b9d-4c99-4e7d-bd6d-c982bbf7bfa2",
     "title": "Cien Años de Soledad",
     "author": "Gabriel García Márquez",
     "year": 1967,
     "copiesAvailable": 2,
-    "genre": "Realismo Mágico",
-    "id": "3c4d5e6f"
+    "genre": "Realismo Mágico"
+  },
+  {
+    "id": "4c64fd9a-6f5d-4b8f-84c4-60e3519d5c0f",
+    "title": "Matar a un Ruiseñor",
+    "author": "Harper Lee",
+    "year": 1960,
+    "copiesAvailable": 3,
+    "genre": "Ficción"
+  },
+  {
+    "id": "5c2b1d39-b2e3-4b89-bb76-10b999f18b99",
+    "title": "Orgullo y Prejuicio",
+    "author": "Jane Austen",
+    "year": 1813,
+    "copiesAvailable": 4,
+    "genre": "Romántico"
+  },
+  {
+    "id": "6d62ad2d-e7b5-4a1e-ae2d-e08d69c58e91",
+    "title": "El Gran Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "year": 1925,
+    "copiesAvailable": 2,
+    "genre": "Ficción"
+  },
+  {
+    "id": "7f84ab2d-bc44-433b-a8d1-dab7a34c9419",
+    "title": "Crimen y Castigo",
+    "author": "Fiódor Dostoyevski",
+    "year": 1866,
+    "copiesAvailable": 1,
+    "genre": "Filosofía"
+  },
+  {
+    "id": "8b9e8d7f-62f9-4a1e-89ba-9c87250788f2",
+    "title": "Don Quijote de la Mancha",
+    "author": "Miguel de Cervantes",
+    "year": 1605,
+    "copiesAvailable": 5,
+    "genre": "Literatura Clásica"
+  },
+  {
+    "id": "9f18b4b1-b8ae-4794-8765-0fbe549f7d84",
+    "title": "La Sombra del Viento",
+    "author": "Carlos Ruiz Zafón",
+    "year": 2001,
+    "copiesAvailable": 3,
+    "genre": "Ficción Histórica"
+  },
+  {
+    "id": "10a7eebd-9f2e-4c4f-9e98-22adf9a86556",
+    "title": "El Código Da Vinci",
+    "author": "Dan Brown",
+    "year": 2003,
+    "copiesAvailable": 2,
+    "genre": "Misterio"
   }
 ]

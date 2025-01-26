@@ -17,24 +17,58 @@ const createUserButton = document.getElementById(
 
 const userData = new UserRepositoryService();
 
+// Muestra el popup de login
 export const showLoginPopup = (): void => {
   loginPopup.classList.remove("hidden");
   popupOverlay.classList.remove("hidden");
 };
 
+// Cierra el popup de login
 const closeLoginPopup = (): void => {
   loginPopup.classList.add("hidden");
   popupOverlay.classList.add("hidden");
 };
 
-const displayUserName = (username: string): void => {
+// Función para crear el contenedor con el nombre de usuario y el botón de logout
+const displayUserNameAndLogoutButton = (username: string): void => {
   const container = document.createElement("div");
-  const span = document.createElement("span");
-  span.textContent = username;
-  container.appendChild(span);
-  container.classList.add("username");
+  container.classList.add("user-info-container");
+
+  const usernameSpan = document.createElement("span");
+  usernameSpan.textContent = username;
+  usernameSpan.classList.add("username");
+
+  const logoutButton = document.createElement("button");
+  logoutButton.textContent = "Cerrar sesión";
+  logoutButton.classList.add("logout-button");
+
+  logoutButton.addEventListener("click", () => {
+    sessionStorage.removeItem("authenticatedUser");
+    location.reload(); // Recargar la página para reflejar el cambio
+  });
+
+  // Añadir el nombre de usuario y el botón de logout al contenedor
+  container.appendChild(usernameSpan);
+  container.appendChild(logoutButton);
+
+  // Reemplazar el loginButton por el contenedor con username y logout
   loginButton.replaceWith(container);
 };
+
+// Función para manejar el estado de autenticación
+const checkAuthentication = (): void => {
+  const storedUser = sessionStorage.getItem("authenticatedUser");
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    displayUserNameAndLogoutButton(user.name); // Mostrar el nombre y el botón de logout
+  } else {
+    // Si no hay usuario autenticado, el botón permanece como "Iniciar sesión"
+    loginButton.textContent = "Iniciar sesión";
+  }
+};
+
+// Llama a checkAuthentication al cargar la página
+document.addEventListener("DOMContentLoaded", checkAuthentication);
 
 loginSubmit.addEventListener("click", async (event) => {
   event.preventDefault();
@@ -46,8 +80,8 @@ loginSubmit.addEventListener("click", async (event) => {
     if (user) {
       alert(`Bienvenido ${user.name}`);
       closeLoginPopup();
-      displayUserName(user.name);
       sessionStorage.setItem("authenticatedUser", JSON.stringify(user));
+      displayUserNameAndLogoutButton(user.name); // Mostrar nombre y logout
     } else {
       alert("Credenciales incorrectas.");
     }
@@ -60,6 +94,9 @@ createUserButton.addEventListener("click", () => {
   alert("Pendiente de implementación");
 });
 
+// Abrir el popup de login
 loginButton.addEventListener("click", showLoginPopup);
+
+// Cerrar el popup de login
 closePopupButton.addEventListener("click", closeLoginPopup);
 popupOverlay.addEventListener("click", closeLoginPopup);

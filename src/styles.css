@@ -181,7 +181,8 @@ main {
   justify-content: space-between;
 }
 
-#closeCatalogBttn {
+#closeCatalogBttn,
+.logout-button {
   border: 1px solid var(--accent-color);
   background-color: transparent;
   color: var(--accent-color);
@@ -192,7 +193,8 @@ main {
   transition: all 0.3s ease;
 }
 
-#closeCatalogBttn:hover {
+#closeCatalogBttn:hover,
+.logout-button:hover {
   background-color: var(--accent-hover);
   color: white;
 }
@@ -247,7 +249,9 @@ main {
 }
 
 .catalog-link-add,
-.catalog-link-delete {
+.catalog-link-delete,
+.catalog-link-borrow,
+.catalog-link-return {
   padding-left: 1rem;
   text-decoration: none;
   transition: color 0.3s ease;
@@ -261,11 +265,15 @@ main {
   color: var(--accent-hover);
 }
 
-.catalog-link-add {
+.catalog-link-add,
+.catalog-link-borrow,
+.catalog-link-return {
   color: var(--primary-color);
 }
 
-.catalog-link-add:hover {
+.catalog-link-add:hover,
+.catalog-link-borrow:hover,
+.catalog-link-return:hover {
   color: var(--primary-hover);
 }
 
@@ -306,7 +314,11 @@ main {
 }
 
 #loginButton,
-.username {
+.user-info-container {
   position: absolute;
   right: 1em;
+}
+
+.logout-button {
+  margin-left: 1em;
 }

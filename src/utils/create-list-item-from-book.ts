@@ -18,11 +18,10 @@ export const createListItemFromBook = (
     const user = JSON.parse(storedUser);
 
     if (!user.isAdmin) {
-      const borrowLink = document.createElement("a");
-      borrowLink.textContent = "Tomar prestado";
-      borrowLink.href = "#";
-      borrowLink.onclick = () => alert("Pendiente de implementar");
-      buttonContainer.appendChild(borrowLink);
+      const pending = () => alert("Pendiente de implementar");
+      const borrowLink = CatalogLinks.createBorrowLink(pending);
+      const returnLink = CatalogLinks.createReturnLink(pending);
+      buttonContainer.append(borrowLink, returnLink);
     }
 
     if (user.isAdmin) {
