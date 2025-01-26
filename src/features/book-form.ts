@@ -2,7 +2,6 @@ import { Book } from "../domain/book";
 import { CatalogService } from "../domain/book/service/catalog-service";
 import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
-import { hideContainer, showContainer } from "../utils/show-and-hide-container";
 import { restartCatalog, showCatalog } from "./catalog";
 
 const catalogService = new CatalogService();
@@ -15,11 +14,11 @@ let selectedBookId: string | null = null;
 export const onAddBookButtonClick = (): void => enableForm();
 
 const enableForm = (): void => {
-  showContainer(formContainer);
+  formContainer.classList.add("visible");
 };
 
 export const disableAndResetForm = (): void => {
-  hideContainer(formContainer);
+  formContainer.classList.remove("visible");
   form.reset();
 };
 
