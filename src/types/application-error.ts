@@ -1,6 +1,7 @@
 export enum ApplicationError {
   ADD_BOOK = "No se ha podido añadir el libro",
   ALREADY_RETURNED = "El libro ya ha sido retornado",
+  CREATE_USER = "Se ha producido un error al crear el usuario",
   DELETE_BOOK = "Error al eliminar el libro",
   GET_BOOK = "No ha podido obtenerse el libro",
   GET_BOOKS = "Ha habido un problema en la obtención del catálogo de libros",

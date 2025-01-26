@@ -1,6 +1,7 @@
 import { UserRepositoryService } from "../domain/user/service/user-repository";
 import { ApplicationError } from "../types/application-error";
 import { toggleAddButtonVisibility } from "../utils/toggle-add-book-button-visibility";
+import { createUserForm } from "./add-user-pop-up";
 import {
   getStoredUser,
   greetUser,
@@ -90,11 +91,11 @@ loginSubmit.addEventListener("click", async (event) => {
 });
 
 createUserButton.addEventListener("click", () => {
-  alert("Pendiente de implementación");
+  createUserForm();
+  closeLoginPopup();
 });
 
 loginButton.addEventListener("click", onLoginButtonClick);
 closePopupButton.addEventListener("click", closeLoginPopup);
 popupOverlay.addEventListener("click", closeLoginPopup);
-
 document.addEventListener("DOMContentLoaded", handleAuth);
