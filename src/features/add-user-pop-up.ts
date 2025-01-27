@@ -3,23 +3,21 @@ import { UserRepositoryService } from "../domain/user/service/user-repository";
 import { validateEmail } from "../types/email-type";
 import { OperationSuccess } from "../types/operation-sucess";
 import { ApplicationError } from "../types/application-error";
+import { hideElement } from "../utils/toggle-visibility";
 
 let isFormOpen = false;
 
 const userRepo = new UserRepositoryService();
 
+const overlay = document.getElementById("popupOverlay") as HTMLDivElement;
+
 const createFormContainer = (): HTMLDivElement => {
   const formContainer = document.createElement("div");
-  formContainer.classList.add("add-user-form-container");
-
-  const overlay = document.createElement("div");
-  overlay.classList.add("popup-overlay");
-  formContainer.appendChild(overlay);
-
+  formContainer.classList.add("popup");
   return formContainer;
 };
 
-const createFormElements = (): HTMLFormElement => {
+const createForm = (): HTMLFormElement => {
   const form = document.createElement("form");
   form.id = "addUserForm";
 
@@ -52,9 +50,12 @@ const createFormElements = (): HTMLFormElement => {
   const isAdminLabel = document.createElement("label");
   isAdminLabel.textContent = "¿Te gustaría tener permisos de administrador?";
 
+  const submitButtonContainer = document.createElement("div");
   const submitButton = document.createElement("button");
+  submitButton.classList.add("primary-button");
   submitButton.type = "submit";
   submitButton.textContent = "Crear usuario";
+  submitButtonContainer.appendChild(submitButton);
 
   form.append(
     nameInput,
@@ -63,7 +64,7 @@ const createFormElements = (): HTMLFormElement => {
     dateOfBirthInput,
     isAdminLabel,
     isAdminInput,
-    submitButton
+    submitButtonContainer
   );
 
   return form;
@@ -73,12 +74,12 @@ const createCloseButton = (
   formContainer: HTMLDivElement
 ): HTMLButtonElement => {
   const closeButton = document.createElement("button");
-  closeButton.type = "button";
-  closeButton.classList.add("close-button");
-  closeButton.textContent = "X";
+  closeButton.classList.add("close-icon-button");
+  closeButton.innerHTML = "&times;";
   closeButton.addEventListener("click", () => {
     formContainer.remove();
     isFormOpen = false;
+    hideElement(overlay);
   });
 
   return closeButton;
@@ -124,6 +125,7 @@ const createUser = async (
     alert(`${ApplicationError.CREATE_USER}`);
   } finally {
     isFormOpen = false;
+    hideElement(overlay);
   }
 };
 
@@ -133,7 +135,7 @@ export const createUserForm = (): HTMLDivElement => {
   isFormOpen = true;
 
   const formContainer = createFormContainer();
-  const form = createFormElements();
+  const form = createForm();
   const closeButton = createCloseButton(formContainer);
 
   formContainer.appendChild(closeButton);

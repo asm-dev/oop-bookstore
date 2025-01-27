@@ -8,14 +8,16 @@
   <body>
     <header>
       <h1>Gestión del catálogo de libros</h1>
-      <button id="loginButton" class="secondaryBttn">Iniciar sesión</button>
+      <button id="loginButton" class="secondary-button">Iniciar sesión</button>
     </header>
     <main>
-      <button id="showCatalogBttn" class="primaryBttn">Mostrar catálogo</button>
+      <button id="showCatalogBttn" class="primary-button">
+        Mostrar catálogo
+      </button>
       <ul id="bookList"></ul>
-      <button id="addBookBttn" class="primaryBttn">Añadir libro</button>
+      <button id="addBookBttn" class="primary-button">Añadir libro</button>
       <div id="bookForm">
-        <button id="closeFormBttn" aria-label="Cerrar formulario">
+        <button class="close-icon-button" aria-label="Cerrar formulario">
           &times;
         </button>
         <form id="addBookForm">
@@ -34,7 +36,7 @@
           <label for="genre">Género (opcional):</label>
           <input type="text" id="genre" />
           <footer id="saveBttnContainer">
-            <button class="secondaryBttn" type="submit">Guardar</button>
+            <button class="secondary-button" type="submit">Guardar</button>
           </footer>
         </form>
       </div>
@@ -43,16 +45,28 @@
     <div id="popupOverlay" class="hidden"></div>
 
     <div id="deletePopup" class="popup hidden">
-      <button id="closePopup" aria-label="Cerrar popup">&times;</button>
+      <button
+        class="close-icon-button"
+        id="closePopup"
+        aria-label="Cerrar popup"
+      >
+        &times;
+      </button>
       <p id="deleteMessage"></p>
       <footer id="actionButtonContainer">
-        <button id="cancelDelete" class="secondaryBttn">Cancelar</button>
-        <button id="confirmDelete" class="primaryBttn">Borrar</button>
+        <button id="cancelDelete" class="secondary-button">Cancelar</button>
+        <button id="confirmDelete" class="primary-button">Borrar</button>
       </footer>
     </div>
 
     <div id="loginPopup" class="popup hidden">
-      <button id="closeLoginPopup" aria-label="Cerrar popup">&times;</button>
+      <button
+        class="close-icon-button"
+        id="closeLoginPopup"
+        aria-label="Cerrar popup"
+      >
+        &times;
+      </button>
       <form>
         <label for="loginEmail">Email:</label>
         <input type="email" id="loginEmail" required />
@@ -62,8 +76,8 @@
       </form>
 
       <div class="popup-buttons">
-        <button id="loginSubmit" class="primaryBttn">Iniciar sesión</button>
-        <button id="createUserButton" class="secondaryBttn">
+        <button id="loginSubmit" class="primary-button">Iniciar sesión</button>
+        <button id="createUserButton" class="secondary-button">
           Crear usuario
         </button>
       </div>

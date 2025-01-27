@@ -56,7 +56,7 @@ main {
   align-items: center;
 }
 
-.primaryBttn {
+.primary-button {
   background-color: var(--primary-color);
   color: var(--secondary-color);
   border: none;
@@ -67,12 +67,12 @@ main {
   transition: background-color 0.3s ease, box-shadow 0.2s ease;
 }
 
-.primaryBttn:hover {
+.primary-button:hover {
   background-color: var(--primary-hover);
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.secondaryBttn {
+.secondary-button {
   border: 1px solid var(--secondary-hover);
   background-color: var(--secondary-color);
   padding: 10px 20px;
@@ -83,7 +83,7 @@ main {
   transition: box-shadow 0.2s ease;
 }
 
-.secondaryBttn:hover {
+.secondary-button:hover {
   border-color: var(--secondary-hover);
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
@@ -117,8 +117,7 @@ main {
   visibility: visible;
 }
 
-#bookForm #closeFormBttn,
-#closeLoginPopup {
+.close-icon-button {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -130,8 +129,24 @@ main {
   transition: color 0.3s ease;
 }
 
-#bookForm #closeFormBttn:hover {
+.close-icon-button:hover {
   color: var(--accent-hover);
+}
+
+.close-button {
+  border: 1px solid var(--accent-color);
+  background-color: transparent;
+  color: var(--accent-color);
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: var(--accent-hover);
+  color: white;
 }
 
 #bookForm label {
@@ -155,6 +170,18 @@ main {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+#addUserForm input[type="checkbox"] {
+  align-self: center;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin: 5px 5px 15px 0;
+  border: none;
+  border-radius: 0;
+  font-size: inherit;
+  transition: none;
+}
+
 #bookForm input:focus,
 #deleteBookUnitsForm input:focus,
 #loginPopup input:focus,
@@ -162,6 +189,12 @@ main {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0px 0px 8px rgba(104, 171, 218, 0.3);
+}
+
+#addUserForm input[type="checkbox"]:focus {
+  outline: none;
+  border-color: initial;
+  box-shadow: none;
 }
 
 #bookForm #saveBttnContainer {
@@ -182,61 +215,6 @@ main {
   margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
-}
-
-#closeCatalogBttn,
-.logout-button {
-  border: 1px solid var(--accent-color);
-  background-color: transparent;
-  color: var(--accent-color);
-  border-radius: 4px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#closeCatalogBttn:hover,
-.logout-button:hover {
-  background-color: var(--accent-hover);
-  color: white;
-}
-
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--secondary-color);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  z-index: 1000;
-  width: 90%;
-  max-width: 400px;
-}
-
-.popup.hidden {
-  display: none;
-}
-
-.popup-buttons {
-  display: flex;
-  justify-content: end;
-  gap: 1rem;
-  margin: 0.5rem 0;
-}
-
-#closePopup {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: transparent;
-  border: none;
-  font-size: 20px;
-  color: var(--accent-color);
-  cursor: pointer;
-  transition: color 0.3s ease;
 }
 
 #deletePopup {
@@ -280,10 +258,6 @@ main {
   color: var(--primary-hover);
 }
 
-#closePopup:hover {
-  color: var(--accent-hover);
-}
-
 #deleteBookUnitsForm {
   margin: 2rem 0;
 }
@@ -297,13 +271,24 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background-color: var(--secondary-color);
   padding: 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1001;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+  width: 90%;
+  max-width: 400px;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup-buttons {
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  justify-content: end;
+  gap: 1rem;
+  margin: 0.5rem 0;
 }
 
 #popupOverlay {
@@ -322,6 +307,13 @@ main {
   right: 1em;
 }
 
-.logout-button {
+#logoutButton {
   margin-left: 1em;
+}
+
+#addUserForm {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

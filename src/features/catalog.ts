@@ -7,6 +7,7 @@ import { showDeletePopup } from "./delete-pop-up";
 const createCloseCatalogButton = (): HTMLButtonElement => {
   const button = document.createElement("button");
   button.id = "closeCatalogBttn";
+  button.classList.add("close-button");
   button.textContent = "Cerrar el catálogo";
   button.style.display = "none";
 

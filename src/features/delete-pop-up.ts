@@ -3,6 +3,7 @@ import { CatalogService } from "../domain/book/service/catalog-service";
 import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
 import { createBookCopiesRemovalForm } from "../utils/create-book-copies-removal-form";
+import { hideElement, showElement } from "../utils/toggle-visibility";
 import { restartCatalog, showCatalog } from "./catalog";
 
 const confirmDelete = document.getElementById(
@@ -28,7 +29,7 @@ export const getCustomRemovalMessage = (book: Book): string =>
     book.copiesAvailable === 1 ? "copia disponible." : "copias disponibles."
   }`;
 
-const closePopup = (): void => popup.classList.add("hidden");
+const closePopup = (): void => hideElement(popup);
 
 const deleteBook = async (bookTitle: string): Promise<void> => {
   try {
@@ -54,7 +55,7 @@ const handleDeleteBook = async (book: Book): Promise<void> => {
 export function showDeletePopup(book: Book): void {
   deleteMessage.textContent = getCustomRemovalMessage(book);
 
-  popup.classList.remove("hidden");
+  showElement(popup);
   closePopupButton.onclick = closePopup;
   cancelDelete.onclick = closePopup;
 

@@ -7,7 +7,7 @@ import {
 import { showCatalog } from "./features/catalog";
 import { handleStickyHeader } from "./utils/sticky-header-handler";
 import { onLoginButtonClick } from "./features/login";
-import { toggleAddButtonVisibility } from "./utils/toggle-add-book-button-visibility";
+import { toggleAddButtonVisibility } from "./utils/toggle-visibility";
 
 const loginButton = document.getElementById("loginButton") as HTMLButtonElement;
 const addBookBttn = document.getElementById("addBookBttn") as HTMLButtonElement;

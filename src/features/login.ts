@@ -1,6 +1,10 @@
 import { UserRepositoryService } from "../domain/user/service/user-repository";
 import { ApplicationError } from "../types/application-error";
-import { toggleAddButtonVisibility } from "../utils/toggle-add-book-button-visibility";
+import {
+  hideElement,
+  showElement,
+  toggleAddButtonVisibility,
+} from "../utils/toggle-visibility";
 import { createUserForm } from "./add-user-pop-up";
 import {
   getStoredUser,
@@ -27,13 +31,13 @@ const createUserButton = document.getElementById(
 const userData = new UserRepositoryService();
 
 export const onLoginButtonClick = (): void => {
-  loginPopup.classList.remove("hidden");
-  popupOverlay.classList.remove("hidden");
+  showElement(loginPopup);
+  showElement(popupOverlay);
 };
 
 const closeLoginPopup = (): void => {
-  loginPopup.classList.add("hidden");
-  popupOverlay.classList.add("hidden");
+  hideElement(loginPopup);
+  hideElement(popupOverlay);
 };
 
 const displayUserAndLogout = (username: string): void => {
@@ -45,8 +49,9 @@ const displayUserAndLogout = (username: string): void => {
   usernameSpan.classList.add("username");
 
   const logoutButton = document.createElement("button");
+  logoutButton.id = "logoutButton";
   logoutButton.textContent = "Cerrar sesión";
-  logoutButton.classList.add("logout-button");
+  logoutButton.classList.add("close-button");
 
   logoutButton.addEventListener("click", () => {
     sessionStorage.removeItem("authenticatedUser");
@@ -93,6 +98,7 @@ loginSubmit.addEventListener("click", async (event) => {
 createUserButton.addEventListener("click", () => {
   createUserForm();
   closeLoginPopup();
+  showElement(popupOverlay);
 });
 
 loginButton.addEventListener("click", onLoginButtonClick);
