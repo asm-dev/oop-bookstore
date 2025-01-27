@@ -73,6 +73,12 @@ const createForm = (): HTMLFormElement => {
   return form;
 };
 
+const closeForm = (formContainer: HTMLDivElement) => {
+  formContainer.remove();
+  isFormOpen = false;
+  hideElement(overlay);
+};
+
 const createCloseButton = (
   formContainer: HTMLDivElement
 ): HTMLButtonElement => {
@@ -80,9 +86,7 @@ const createCloseButton = (
   closeButton.classList.add("close-icon-button");
   closeButton.innerHTML = "&times;";
   closeButton.addEventListener("click", () => {
-    formContainer.remove();
-    isFormOpen = false;
-    hideElement(overlay);
+    closeForm(formContainer);
   });
 
   return closeButton;
@@ -145,7 +149,7 @@ export const createUserForm = (): HTMLDivElement => {
   formContainer.appendChild(form);
   document.body.appendChild(formContainer);
 
-  form.addEventListener("submit", (event) =>
+  form.addEventListener("submit", (event) => {
     createUser(
       event,
       form.querySelector('input[name="name"]') as HTMLInputElement,
@@ -154,8 +158,9 @@ export const createUserForm = (): HTMLDivElement => {
       form.querySelector('input[name="dateOfBirth"]') as HTMLInputElement,
       form.querySelector('input[name="isAdmin"]') as HTMLInputElement,
       form
-    )
-  );
+    );
+    closeForm(formContainer);
+  });
 
   return formContainer;
 };
