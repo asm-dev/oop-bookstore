@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "id": "31dbec97-0919-4ff3-bd7c-dd0b9da71510",
     "name": "Admin User",
     "email": "admin@example.com",
     "password": "admin",
@@ -9,7 +9,7 @@
     "isAdmin": true
   },
   {
-    "id": "2",
+    "id": "4fb4a6fa-aa63-4292-a704-f9ec14c0598b",
     "name": "Mister Patata",
     "email": "user@example.com",
     "password": "potato",

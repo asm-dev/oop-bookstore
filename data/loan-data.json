@@ -1,15 +1,29 @@
 [
   {
-    "id": "l1",
-    "bookId": "1a2b3c4d",
-    "userId": "u1",
+    "id": "720ae90b-6007-43a4-83cf-9cd558f54295",
+    "bookId": "2e2c9b5f-cfbf-4d85-92f9-88da467a6b25",
+    "userId": "4fb4a6fa-aa63-4292-a704-f9ec14c0598b",
     "loanDate": "2024-12-01T12:00:00Z",
     "returnDate": "2024-12-15T12:00:00Z"
   },
   {
-    "id": "l2",
-    "bookId": "3c4d5e6f",
-    "userId": "u1",
+    "id": "9946d644-14ba-4163-8204-326e1816f037",
+    "bookId": "3c7f8b9d-4c99-4e7d-bd6d-c982bbf7bfa2",
+    "userId": "4fb4a6fa-aa63-4292-a704-f9ec14c0598b",
+    "loanDate": "2024-12-10T12:00:00Z",
+    "returnDate": null
+  },
+  {
+    "id": "3a7c9e18-3d5e-4a72-96a5-12f64b15ab4b",
+    "bookId": "8b9e8d7f-62f9-4a1e-89ba-9c87250788f2",
+    "userId": "4fb4a6fa-aa63-4292-a704-f9ec14c0598b",
+    "loanDate": "2024-12-10T12:00:00Z",
+    "returnDate": null
+  },
+  {
+    "id": "edc71260-b87a-4191-9215-df438a1dcb63",
+    "bookId": "9f18b4b1-b8ae-4794-8765-0fbe549f7d84",
+    "userId": "4fb4a6fa-aa63-4292-a704-f9ec14c0598b",
     "loanDate": "2024-12-10T12:00:00Z",
     "returnDate": null
   }
