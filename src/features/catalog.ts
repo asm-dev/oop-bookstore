@@ -1,8 +1,9 @@
+import { Book } from "../domain/book";
 import { CatalogService } from "../domain/book/service/catalog-service";
+import { Loan } from "../domain/loan";
 import { ApplicationError } from "../types/application-error";
-import { createListItemFromBook } from "../utils/create-list-item-from-book";
-import { fillBookForm } from "./book-form";
-import { showDeletePopup } from "./delete-pop-up";
+import { getStoredUser } from "../utils/user-auth";
+import { CatalogUserActions } from "./catalog-user-actions";
 
 const createCloseCatalogButton = (): HTMLButtonElement => {
   const button = document.createElement("button");
@@ -38,6 +39,23 @@ const displayCloseCatalogButton = (): void => {
   closeCatalogButton.style.display = "inline-block";
 };
 
+const createButtonContainer = (): HTMLDivElement => {
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("button-container");
+  return buttonContainer;
+};
+
+const createListElement = (book: Book): HTMLLIElement => {
+  const listItem = document.createElement("li");
+  listItem.textContent = `${book.title} - ${book.author} (${book.year})`;
+  return listItem;
+};
+
+//TODO: comprobar loans
+const hasBeenBorrowed = (book: Book, loanLog: Loan[]): Loan | undefined => {
+  return undefined;
+};
+
 export const restartCatalog = (): void => {
   bookList.innerHTML = "";
 };
@@ -45,15 +63,28 @@ export const restartCatalog = (): void => {
 export async function showCatalog(): Promise<void> {
   try {
     const catalog = await catalogService.getAllBooks();
+    const user = getStoredUser();
 
     catalog.forEach((book) => {
-      const listItem = createListItemFromBook(
-        book,
-        () => fillBookForm(book),
-        () => showDeletePopup(book)
-      );
+      const links = createButtonContainer();
+      const bookInfo = createListElement(book);
 
-      bookList.appendChild(listItem);
+      if (user) {
+        const userLoans = [];
+        if (user.isAdmin) {
+          links.append(
+            CatalogUserActions.createEditLink(book),
+            CatalogUserActions.createDeleteLink(book)
+          );
+        } else {
+          const loan = hasBeenBorrowed(book, userLoans);
+          loan
+            ? links.append(CatalogUserActions.createReturnLink(loan))
+            : links.append(CatalogUserActions.createBorrowLink(book));
+        }
+      }
+      bookInfo.appendChild(links);
+      bookList.appendChild(bookInfo);
     });
 
     displayCloseCatalogButton();
