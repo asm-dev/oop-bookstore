@@ -43,6 +43,8 @@ const createForm = (): HTMLFormElement => {
   dateOfBirthInput.type = "date";
   dateOfBirthInput.name = "dateOfBirth";
   dateOfBirthInput.required = true;
+  const dateOfBirthLabel = document.createElement("label");
+  dateOfBirthLabel.textContent = "Fecha de nacimiento";
 
   const isAdminInput = document.createElement("input");
   isAdminInput.type = "checkbox";
@@ -61,6 +63,7 @@ const createForm = (): HTMLFormElement => {
     nameInput,
     emailInput,
     passwordInput,
+    dateOfBirthLabel,
     dateOfBirthInput,
     isAdminLabel,
     isAdminInput,
