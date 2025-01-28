@@ -8,6 +8,7 @@ import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
 import { createLink } from "../utils/create-link";
 import { fillBookForm } from "./book-form";
+import { hideCatalog } from "./catalog";
 import { showDeletePopup } from "./delete-pop-up";
 
 export class CatalogUserActions {
@@ -61,6 +62,7 @@ export class CatalogUserActions {
       await this.catalogService.updateBook(bookInstance);
       await this.loanService.addLoan(newLoan);
 
+      hideCatalog();
       alert(OperationSuccess.SAVED_LOAN);
     } catch (error) {
       console.error(`${ApplicationError.SAVE_LOAN}: ${error}`);

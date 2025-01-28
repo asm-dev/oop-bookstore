@@ -168,13 +168,6 @@ app.post("/api/loans", (req: Request, res: Response) => {
         .json({ error: "El libro o el usuario no existen." });
     }
 
-    if (book.copiesAvailable <= 0) {
-      return res
-        .status(400)
-        .json({ error: "No hay copias disponibles del libro." });
-    }
-
-    book.copiesAvailable -= 1;
     loans.push(newLoan);
 
     saveData(BOOK_DATA, books);

@@ -26,7 +26,7 @@ showCatalogButton.insertAdjacentElement("afterend", closeCatalogButton);
 const catalogService = new CatalogService();
 const loanLogService = new LoanLogService();
 
-const hideCatalog = (): void => {
+export const hideCatalog = (): void => {
   restartCatalog();
   displayShowCatalogButton();
 };
@@ -74,24 +74,31 @@ export async function showCatalog(): Promise<void> {
     }
 
     catalog.forEach((book) => {
-      const links = createButtonContainer();
+      const container = createButtonContainer();
       const bookInfo = createListElement(book);
 
       if (user) {
         if (user.isAdmin) {
-          links.append(
+          container.append(
             CatalogUserActions.createEditLink(book),
             CatalogUserActions.createDeleteLink(book)
           );
         } else {
-          hasBeenBorrowed(book.id, loanLog)
-            ? links.append(
-                CatalogUserActions.createReturnLink(new Loan(book.id, user.id))
-              )
-            : links.append(CatalogUserActions.createBorrowLink(book, user.id));
+          if (hasBeenBorrowed(book.id, loanLog)) {
+            container.append(
+              CatalogUserActions.createReturnLink(new Loan(book.id, user.id))
+            );
+          } else {
+            if (book.copiesAvailable > 0) {
+              container.append(
+                CatalogUserActions.createBorrowLink(book, user.id)
+              );
+            }
+          }
         }
       }
-      bookInfo.appendChild(links);
+
+      bookInfo.appendChild(container);
       bookList.appendChild(bookInfo);
     });
 
