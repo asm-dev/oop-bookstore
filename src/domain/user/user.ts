@@ -13,9 +13,10 @@ export class User implements UserModel {
     public password: string,
     public dateOfBirth: Date,
     registrationDate?: Date,
-    isAdmin: boolean = false
+    isAdmin: boolean = false,
+    id?: string
   ) {
-    this.id = uuidv4();
+    this.id = id || uuidv4();
     this.registrationDate = registrationDate || new Date();
     this.isAdmin = isAdmin;
   }

@@ -16,4 +16,14 @@ export class Loan implements LoanModel {
     this.loanDate = loanDate || new Date();
     this.returnDate = returnDate;
   }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      bookId: this.bookId,
+      userId: this.userId,
+      loanDate: this.loanDate.toISOString(),
+      returnDate: this.returnDate?.toISOString(),
+    };
+  }
 }

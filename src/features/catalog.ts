@@ -88,7 +88,7 @@ export async function showCatalog(): Promise<void> {
             ? links.append(
                 CatalogUserActions.createReturnLink(new Loan(book.id, user.id))
               )
-            : links.append(CatalogUserActions.createBorrowLink(book, user));
+            : links.append(CatalogUserActions.createBorrowLink(book, user.id));
         }
       }
       bookInfo.appendChild(links);

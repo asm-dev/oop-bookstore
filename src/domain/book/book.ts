@@ -27,4 +27,15 @@ export class Book implements BookModel {
   public returnCopy(): void {
     this.copiesAvailable++;
   }
+
+  public static fromJSON(json: Partial<Book>): Book {
+    return new Book(
+      json.title ?? "",
+      json.author ?? "",
+      json.year ?? 0,
+      json.copiesAvailable ?? 0,
+      json.genre,
+      json.id ?? uuidv4()
+    );
+  }
 }

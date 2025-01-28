@@ -61,7 +61,8 @@ export class UserRepositoryService implements UserRepositoryModel {
         user.password,
         new Date(user.dateOfBirth),
         new Date(user.registrationDate),
-        user.isAdmin
+        user.isAdmin,
+        user.id
       );
     } catch (error) {
       throw error;

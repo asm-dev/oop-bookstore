@@ -159,8 +159,8 @@ app.post("/api/loans", (req: Request, res: Response) => {
     const books = getData<Book>(BOOK_DATA);
     const users = getData<User>(USER_DATA);
 
-    const book = books.find((b) => b.title === newLoan.bookId);
-    const user = users.find((u) => u.email === newLoan.userId);
+    const book = books.find((book) => book.id === newLoan.bookId);
+    const user = users.find((user) => user.id === newLoan.userId);
 
     if (!book || !user) {
       return res
@@ -197,7 +197,7 @@ app.delete("/api/loans/:id", (req: Request, res: Response) => {
     }
 
     const loan = loans[loanIndex];
-    const book = books.find((b) => b.title === loan.bookId);
+    const book = books.find((book) => book.id === loan.bookId);
 
     if (book) {
       book.returnCopy();
