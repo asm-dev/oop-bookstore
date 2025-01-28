@@ -178,48 +178,25 @@ app.post("/api/loans", (req: Request, res: Response) => {
   }
 });
 
-app.delete("/api/loans/:id", (req: Request, res: Response) => {
+app.patch("/api/loans/return", (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
-    const loans = getData<Loan>(LOAN_DATA);
-    const books = getData<Book>(BOOK_DATA);
+    const { userId, bookId, returnDate } = req.body;
 
-    const loanIndex = loans.findIndex((loan) => loan.id === id);
-    if (loanIndex === -1) {
-      return res.status(404).json({ error: "El préstamo no existe." });
-    }
-
-    const loan = loans[loanIndex];
-    const book = books.find((book) => book.id === loan.bookId);
-
-    if (book) {
-      book.returnCopy();
-    }
-
-    loans.splice(loanIndex, 1);
-    saveData(BOOK_DATA, books);
-    saveData(LOAN_DATA, loans);
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el préstamo." });
-  }
-});
-
-app.patch("/api/loans/:id", (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const { returnDate } = req.body;
     const loans = getData<Loan>(LOAN_DATA);
 
-    const loan = loans.find((loan) => loan.id === id);
+    console.log("loans", loans);
+    console.log("userId", userId);
+    console.log("bookId", bookId);
+
+    const loan = loans.find(
+      (loan) =>
+        loan.userId === userId && loan.bookId === bookId && !loan.returnDate
+    );
+
     if (!loan) {
-      return res.status(404).json({ error: "El préstamo no existe." });
-    }
-
-    if (!returnDate) {
       return res
-        .status(400)
-        .json({ error: "La fecha de devolución es requerida." });
+        .status(404)
+        .json({ error: "El préstamo no existe o ya fue devuelto." });
     }
 
     loan.returnDate = returnDate;

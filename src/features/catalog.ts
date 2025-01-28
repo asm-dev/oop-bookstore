@@ -86,7 +86,7 @@ export async function showCatalog(): Promise<void> {
         } else {
           if (hasBeenBorrowed(book.id, loanLog)) {
             container.append(
-              CatalogUserActions.createReturnLink(new Loan(book.id, user.id))
+              CatalogUserActions.createReturnLink(book.id, user.id)
             );
           } else {
             if (book.copiesAvailable > 0) {

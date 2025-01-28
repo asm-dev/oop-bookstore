@@ -39,11 +39,15 @@ export class LoanLogService implements LoanLogModel {
   }
 
   @Loading
-  public async returnBook(loanId: string): Promise<void> {
-    const response = await fetch(`${API_URL}/${loanId}`, {
+  public async returnBook(userId: string, bookId: string): Promise<void> {
+    const response = await fetch(`${API_URL}/return`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ returnDate: new Date().toISOString() }),
+      body: JSON.stringify({
+        userId: userId,
+        bookId: bookId,
+        returnDate: new Date().toISOString(),
+      }),
     });
 
     if (!response.ok) throw new Error(ApplicationError.RETURN_BOOK);

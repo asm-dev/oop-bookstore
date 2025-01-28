@@ -3,7 +3,6 @@ import { Book } from "../domain/book";
 import { CatalogService } from "../domain/book/service/catalog-service";
 import { Loan } from "../domain/loan";
 import { LoanLogService } from "../domain/loan/service/loan-log-service";
-import { User } from "../domain/user";
 import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
 import { createLink } from "../utils/create-link";
@@ -42,9 +41,12 @@ export class CatalogUserActions {
   }
 
   @AuthRequired()
-  public static createReturnLink(loan: Loan): HTMLAnchorElement {
+  public static createReturnLink(
+    bookId: string,
+    userId: string
+  ): HTMLAnchorElement {
     return createLink(
-      () => this.onReturnBook(loan),
+      () => this.onReturnBook(userId, bookId),
       "Devolver",
       "catalog-link-return"
     );
@@ -70,21 +72,24 @@ export class CatalogUserActions {
     }
   };
 
-  private static onReturnBook = async (loan: Loan): Promise<void> => {
+  private static onReturnBook = async (
+    userId: string,
+    bookId: string
+  ): Promise<void> => {
     try {
-      await this.loanService.returnBook(loan.id);
-
+      await this.loanService.returnBook(userId, bookId);
       const books = await this.catalogService.getAllBooks();
-      const book = books.find((book) => book.id === loan.bookId);
-
+      const book = books.find((book) => book.id === bookId);
       if (!book) {
         throw new Error(ApplicationError.NOT_FOUND_BOOK);
       }
 
-      book.returnCopy();
+      const bookInstance = Book.fromJSON(book);
+      bookInstance.returnCopy();
 
-      await this.catalogService.updateBook(book);
+      await this.catalogService.updateBook(bookInstance);
 
+      hideCatalog();
       alert(OperationSuccess.RETURN_BOOK);
     } catch (error) {
       console.error(`${ApplicationError.RETURN_BOOK}: ${error}`);
