@@ -2,7 +2,7 @@ import { Book } from "../domain/book";
 import { CatalogService } from "../domain/book/service/catalog-service";
 import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
-import { restartCatalog, showCatalog } from "./catalog";
+import { hideCatalog, showCatalog } from "./catalog";
 
 const catalogService = new CatalogService();
 const formContainer = document.getElementById("bookForm") as HTMLDivElement;
@@ -84,7 +84,7 @@ export async function onBookFormClick(event: SubmitEvent): Promise<void> {
   }
 
   disableAndResetForm();
-  restartCatalog();
+  hideCatalog();
   await showCatalog();
   isEditing = false;
   selectedBookId = null;

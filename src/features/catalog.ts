@@ -27,7 +27,7 @@ const catalogService = new CatalogService();
 const loanLogService = new LoanLogService();
 
 export const hideCatalog = (): void => {
-  restartCatalog();
+  bookList.innerHTML = "";
   displayShowCatalogButton();
 };
 
@@ -57,10 +57,6 @@ const hasBeenBorrowed = (bookId: string, loanLog: Loan[]): boolean => {
   const hasLoan = loanLog.some((catalogBook) => catalogBook.bookId === bookId);
 
   return hasLoan;
-};
-
-export const restartCatalog = (): void => {
-  bookList.innerHTML = "";
 };
 
 export async function showCatalog(): Promise<void> {

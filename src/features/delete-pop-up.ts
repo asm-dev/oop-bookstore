@@ -4,7 +4,7 @@ import { ApplicationError } from "../types/application-error";
 import { OperationSuccess } from "../types/operation-sucess";
 import { createBookCopiesRemovalForm } from "../utils/create-book-copies-removal-form";
 import { hideElement, showElement } from "../utils/toggle-visibility";
-import { restartCatalog, showCatalog } from "./catalog";
+import { hideCatalog, showCatalog } from "./catalog";
 
 const confirmDelete = document.getElementById(
   "confirmDelete"
@@ -36,7 +36,7 @@ const deleteBook = async (bookTitle: string): Promise<void> => {
     await catalog.deleteBook(bookTitle);
     alert(OperationSuccess.DELETED_BOOK);
     closePopup();
-    restartCatalog();
+    hideCatalog();
     await showCatalog();
   } catch (error) {
     alert(ApplicationError.DELETE_BOOK);
@@ -73,7 +73,7 @@ export function showDeletePopup(book: Book): void {
   }
 }
 
-const getCopiesToBorrow = (): number => {
+const copiesToDelete = (): number => {
   return parseInt(
     (document.getElementById("unitsToDelete") as HTMLInputElement).value,
     10
@@ -92,16 +92,17 @@ const borrowCopyFromBook = async (
   copies: number
 ): Promise<void> => {
   try {
-    book.borrow(copies);
-    await catalog.updateBook(book);
-    OperationSuccess.DELETED_COPIES;
+    const bookInstance = Book.fromJSON(book);
+    bookInstance.borrow(copies);
+    await catalog.updateBook(bookInstance);
+    alert(OperationSuccess.DELETED_COPIES);
   } catch (error) {
-    ApplicationError.SAVE_COPIES;
+    console.error(ApplicationError.SAVE_COPIES);
   }
 };
 
 async function handleDeleteCopies(book: Book): Promise<void> {
-  const selectedCopies = getCopiesToBorrow();
+  const selectedCopies = copiesToDelete();
 
   if (isValidCopiesSelection(selectedCopies, book.copiesAvailable)) {
     if (selectedCopies === book.copiesAvailable) {
@@ -110,8 +111,7 @@ async function handleDeleteCopies(book: Book): Promise<void> {
       await borrowCopyFromBook(book, selectedCopies);
     }
     closePopup();
-    restartCatalog();
-    await showCatalog();
+    hideCatalog();
   } else {
     alert(
       `Por favor, introduce un número válido entre 1 y ${book.copiesAvailable}.`
