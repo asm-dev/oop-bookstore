@@ -238,23 +238,23 @@ main {
   transition: color 0.3s ease;
 }
 
-.catalog-link-delete {
+.catalog-link-delete,
+.catalog-link-return {
   color: var(--accent-color);
 }
 
-.catalog-link-delete:hover {
+.catalog-link-delete:hover,
+.catalog-link-return:hover {
   color: var(--accent-hover);
 }
 
 .catalog-link-add,
-.catalog-link-borrow,
-.catalog-link-return {
+.catalog-link-borrow {
   color: var(--primary-color);
 }
 
 .catalog-link-add:hover,
-.catalog-link-borrow:hover,
-.catalog-link-return:hover {
+.catalog-link-borrow:hover {
   color: var(--primary-hover);
 }
 

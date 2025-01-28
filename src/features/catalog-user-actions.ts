@@ -1,13 +1,14 @@
 import { AuthRequired } from "../decorators";
 import { Book } from "../domain/book";
 import { Loan } from "../domain/loan";
+import { User } from "../domain/user";
 import { createLink } from "../utils/create-link";
 import { fillBookForm } from "./book-form";
 import { showDeletePopup } from "./delete-pop-up";
 
 export class CatalogUserActions {
-  private static onBorrowBook = (book: Book): void => {
-    //TODO: Crear nueva Loan y hacer copias -1;
+  private static onBorrowBook = (book: Book, user: User): void => {
+    //TODO: new loan, devolver copia al libro, actualizar en catalogo
   };
 
   private static onReturnBook = (loan: Loan): void => {
@@ -29,9 +30,9 @@ export class CatalogUserActions {
   }
 
   @AuthRequired()
-  public static createBorrowLink(book: Book): HTMLAnchorElement {
+  public static createBorrowLink(book: Book, user: User): HTMLAnchorElement {
     return createLink(
-      () => this.onBorrowBook(book),
+      () => this.onBorrowBook(book, user),
       "Tomar prestado",
       "catalog-link-borrow"
     );

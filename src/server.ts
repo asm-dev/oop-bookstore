@@ -212,6 +212,32 @@ app.delete("/api/loans/:id", (req: Request, res: Response) => {
   }
 });
 
+app.patch("/api/loans/:id", (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const { returnDate } = req.body;
+    const loans = getData<Loan>(LOAN_DATA);
+
+    const loan = loans.find((loan) => loan.id === id);
+    if (!loan) {
+      return res.status(404).json({ error: "El préstamo no existe." });
+    }
+
+    if (!returnDate) {
+      return res
+        .status(400)
+        .json({ error: "La fecha de devolución es requerida." });
+    }
+
+    loan.returnDate = returnDate;
+    saveData(LOAN_DATA, loans);
+
+    res.status(200).json(loan);
+  } catch (error) {
+    res.status(500).json({ error: "Error al actualizar el préstamo." });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en http://localhost:${PORT}`);
 });

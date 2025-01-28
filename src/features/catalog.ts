@@ -1,6 +1,7 @@
 import { Book } from "../domain/book";
 import { CatalogService } from "../domain/book/service/catalog-service";
 import { Loan } from "../domain/loan";
+import { LoanLogService } from "../domain/loan/service/loan-log-service";
 import { ApplicationError } from "../types/application-error";
 import { getStoredUser } from "../utils/user-auth";
 import { CatalogUserActions } from "./catalog-user-actions";
@@ -23,6 +24,7 @@ const closeCatalogButton = createCloseCatalogButton();
 showCatalogButton.insertAdjacentElement("afterend", closeCatalogButton);
 
 const catalogService = new CatalogService();
+const loanLogService = new LoanLogService();
 
 const hideCatalog = (): void => {
   restartCatalog();
@@ -51,9 +53,10 @@ const createListElement = (book: Book): HTMLLIElement => {
   return listItem;
 };
 
-//TODO: comprobar loans
-const hasBeenBorrowed = (book: Book, loanLog: Loan[]): Loan | undefined => {
-  return undefined;
+const hasBeenBorrowed = (bookId: string, loanLog: Loan[]): boolean => {
+  const hasLoan = loanLog.some((catalogBook) => catalogBook.bookId === bookId);
+
+  return hasLoan;
 };
 
 export const restartCatalog = (): void => {
@@ -64,23 +67,24 @@ export async function showCatalog(): Promise<void> {
   try {
     const catalog = await catalogService.getAllBooks();
     const user = getStoredUser();
+    const loanLog = await loanLogService.getActiveLoansByUser(user.id);
 
     catalog.forEach((book) => {
       const links = createButtonContainer();
       const bookInfo = createListElement(book);
 
       if (user) {
-        const userLoans = [];
         if (user.isAdmin) {
           links.append(
             CatalogUserActions.createEditLink(book),
             CatalogUserActions.createDeleteLink(book)
           );
         } else {
-          const loan = hasBeenBorrowed(book, userLoans);
-          loan
-            ? links.append(CatalogUserActions.createReturnLink(loan))
-            : links.append(CatalogUserActions.createBorrowLink(book));
+          hasBeenBorrowed(book.id, loanLog)
+            ? links.append(
+                CatalogUserActions.createReturnLink(new Loan(book.id, user.id))
+              )
+            : links.append(CatalogUserActions.createBorrowLink(book, user));
         }
       }
       bookInfo.appendChild(links);

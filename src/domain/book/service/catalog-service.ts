@@ -3,7 +3,7 @@ import { Loading } from "../../../decorators";
 import { ApplicationError } from "../../../types/application-error";
 import { Book } from "../book";
 
-export interface BookRepository {
+export interface CatalogServiceModel {
   getAllBooks(): Promise<Book[]>;
   addBook(book: Book): Promise<void>;
   updateBook(book: Book): Promise<void>;
@@ -12,7 +12,7 @@ export interface BookRepository {
 
 const API_URL = API_ENDPOINTS.BOOKS;
 
-export class CatalogService implements BookRepository {
+export class CatalogService implements CatalogServiceModel {
   @Loading
   public async getAllBooks(): Promise<Book[]> {
     const response = await fetch(API_URL);
