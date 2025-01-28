@@ -67,7 +67,11 @@ export async function showCatalog(): Promise<void> {
   try {
     const catalog = await catalogService.getAllBooks();
     const user = getStoredUser();
-    const loanLog = await loanLogService.getActiveLoansByUser(user.id);
+    let loanLog: Loan[] = [];
+
+    if (user) {
+      loanLog = await loanLogService.getActiveLoansByUser(user.id);
+    }
 
     catalog.forEach((book) => {
       const links = createButtonContainer();
