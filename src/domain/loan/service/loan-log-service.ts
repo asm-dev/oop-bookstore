@@ -2,13 +2,7 @@ import { API_ENDPOINTS } from "../../../config/api-endpoints";
 import { Loading } from "../../../decorators";
 import { ApplicationError } from "../../../types/application-error";
 import { Loan } from "../loan";
-
-export interface LoanLogModel {
-  addLoan(loan: Loan): Promise<void>;
-  getActiveLoansByUser(userId: string): Promise<Loan[]>;
-  deleteLoan(loanId: string): Promise<void>;
-  returnBook(loanId: string): Promise<void>;
-}
+import { LoanLogModel } from "./loan-log-model";
 
 const API_URL = API_ENDPOINTS.LOANS;
 

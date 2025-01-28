@@ -2,17 +2,11 @@ import { API_ENDPOINTS } from "../../../config/api-endpoints";
 import { Loading } from "../../../decorators";
 import { ApplicationError } from "../../../types/application-error";
 import { Book } from "../book";
-
-export interface CatalogServiceModel {
-  getAllBooks(): Promise<Book[]>;
-  addBook(book: Book): Promise<void>;
-  updateBook(book: Book): Promise<void>;
-  deleteBook(id: string): Promise<void>;
-}
+import { CatalogModel } from "./catalog-model";
 
 const API_URL = API_ENDPOINTS.BOOKS;
 
-export class CatalogService implements CatalogServiceModel {
+export class CatalogService implements CatalogModel {
   @Loading
   public async getAllBooks(): Promise<Book[]> {
     const response = await fetch(API_URL);

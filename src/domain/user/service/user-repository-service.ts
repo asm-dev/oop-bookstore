@@ -2,15 +2,10 @@ import { User } from "../user";
 import { ApplicationError } from "../../../types/application-error";
 import { API_ENDPOINTS } from "../../../config/api-endpoints";
 import { Loading } from "../../../decorators";
-
-export interface UserRepositoryModel {
-  addUser(user: User): Promise<void>;
-  getUserById(userId: string): Promise<User | undefined>;
-  getUserByEmail(email: string): Promise<User | undefined>;
-  login(email: string, password: string): Promise<User | undefined>;
-}
+import { UserRepositoryModel } from "./user-repository-model";
 
 const API_URL = API_ENDPOINTS.USERS;
+
 export class UserRepositoryService implements UserRepositoryModel {
   @Loading
   public async addUser(user: User): Promise<void> {

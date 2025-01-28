@@ -18,7 +18,7 @@ const createCloseCatalogButton = (): HTMLButtonElement => {
 
 const bookList = document.getElementById("bookList") as HTMLUListElement;
 const showCatalogButton = document.getElementById(
-  "showCatalogBttn"
+  "showCatalogButton"
 ) as HTMLButtonElement;
 const closeCatalogButton = createCloseCatalogButton();
 showCatalogButton.insertAdjacentElement("afterend", closeCatalogButton);

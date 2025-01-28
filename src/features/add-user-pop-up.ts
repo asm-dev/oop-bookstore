@@ -1,5 +1,5 @@
 import { User } from "../domain/user/user";
-import { UserRepositoryService } from "../domain/user/service/user-repository";
+import { UserRepositoryService } from "../domain/user/service/user-repository-service";
 import { validateEmail } from "../types/email-type";
 import { OperationSuccess } from "../types/operation-sucess";
 import { ApplicationError } from "../types/application-error";

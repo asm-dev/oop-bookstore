@@ -1,4 +1,4 @@
-import { UserRepositoryService } from "../domain/user/service/user-repository";
+import { UserRepositoryService } from "../domain/user/service/user-repository-service";
 import { ApplicationError } from "../types/application-error";
 import {
   hideElement,
