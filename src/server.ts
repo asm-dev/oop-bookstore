@@ -184,10 +184,6 @@ app.patch("/api/loans/return", (req: Request, res: Response) => {
 
     const loans = getData<Loan>(LOAN_DATA);
 
-    console.log("loans", loans);
-    console.log("userId", userId);
-    console.log("bookId", bookId);
-
     const loan = loans.find(
       (loan) =>
         loan.userId === userId && loan.bookId === bookId && !loan.returnDate
