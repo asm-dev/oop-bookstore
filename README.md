@@ -48,22 +48,24 @@ La realización de este proyecto se relaciona con la entrega de una actividad de
 
 Acción | Usuario habilitado | Notas  
 :-------------------------:|:-------------------------:|:-------------------------:
-Navegación del catálogo | Todos |
-Agregar nuevos libros | Admin | 
-Modificar información de libro existente | Admin | 
-Eliminar un libro del catálogo | Admin |
+Navegación del catálogo | Todos | ![image](https://github.com/user-attachments/assets/616236c2-5e7c-4ae2-891d-95d6686652e9)
+Agregar nuevos libros | Admin | ![image](https://github.com/user-attachments/assets/43afab4c-deca-459d-a7f1-55e6585ca85b) ![image](https://github.com/user-attachments/assets/d62d1815-d5e0-46c7-b379-56b0fb40ea77)
+Modificar información de libro existente | Admin | ![image](https://github.com/user-attachments/assets/c231fd4a-8f6a-485c-b913-551ec2eff8f8)
+Eliminar un libro del catálogo | Admin | ![image](https://github.com/user-attachments/assets/f347c257-6e72-4686-a98b-a3074a850c19) ![image](https://github.com/user-attachments/assets/19a63024-115a-4147-a14a-0b5fdf4a5ddb) ![image](https://github.com/user-attachments/assets/bd20176b-2cbf-427f-aed0-b067d9c60666)
 
 *Gestión de usuarios*
 
 Acción | Usuario habilitado | Notas  
 :-------------------------:|:-------------------------:|:-------------------------:
-Login | Todos
-Logout | Todos
-Registrar nuevos usuarios | Todos
+Login | Todos |  ![image](https://github.com/user-attachments/assets/220de89e-4ae2-4b71-a6ef-8d6e16e7f2ac)
+Una vez instroducidas, se validan las credenciales en el servidor. Si son correctas, el usuario puede acceder 
+Logout | Todos | ![image](https://github.com/user-attachments/assets/d0ce1f79-d5b7-4d81-9909-6235a9288c39)
+Registrar nuevos usuarios | Todos | ![image](https://github.com/user-attachments/assets/c7fd3383-787d-4d84-add9-97b6b3c8364d)
+
 
 *Gestión de préstamos*
 
 Acción | Usuario habilitado | Notas  
 :-------------------------:|:-------------------------:|:-------------------------:
-Tomar prestado un libro | Usuario registrado regular | Se reduce el número de copias, , Se impide el préstamo cuando no hay copias disponibles
-Devolver un libro | Usuario registrado regular | Sólo se devuelven los libros prestados por el usuario, , se reduce el número de copias disponibles
+Tomar prestado un libro | Usuario registrado regular |  ![image](https://github.com/user-attachments/assets/cff1bba9-4dde-4f94-ba01-fe43ce092866) Se reduce el número de copias ![image](https://github.com/user-attachments/assets/fdf3f244-e87a-4d76-aadc-0b3debc75624) Se impide el préstamo cuando no hay copias disponibles ![image](https://github.com/user-attachments/assets/5055363e-671d-4b00-9ac7-8e0189488ed2)
+Devolver un libro | Usuario registrado regular | Sólo se devuelven los libros prestados por el usuario, aumentando sus copias una vez devueltos ![image](https://github.com/user-attachments/assets/345debaa-6516-4917-bd9b-20ce9a3e3d0d)
