@@ -44,7 +44,9 @@ La realización de este proyecto se relaciona con la entrega de una actividad de
 
 ## Uso
 
-*Gestión de libros* 
+&nbsp;
+
+### Gestión de libros
 
 Acción | Usuario habilitado | Notas  
 :-------------------------:|:-------------------------:|:-------------------------:
@@ -53,7 +55,9 @@ Agregar nuevos libros | Admin | ![image](https://github.com/user-attachments/ass
 Modificar información de libro existente | Admin | ![image](https://github.com/user-attachments/assets/c231fd4a-8f6a-485c-b913-551ec2eff8f8)
 Eliminar un libro del catálogo | Admin | ![image](https://github.com/user-attachments/assets/f347c257-6e72-4686-a98b-a3074a850c19) ![image](https://github.com/user-attachments/assets/19a63024-115a-4147-a14a-0b5fdf4a5ddb) ![image](https://github.com/user-attachments/assets/bd20176b-2cbf-427f-aed0-b067d9c60666)
 
-*Gestión de usuarios*
+&nbsp;
+
+### Gestión de usuarios
 
 Acción | Usuario habilitado | Notas  
 :-------------------------:|:-------------------------:|:-------------------------:
@@ -62,8 +66,9 @@ Una vez instroducidas, se validan las credenciales en el servidor. Si son correc
 Logout | Todos | ![image](https://github.com/user-attachments/assets/d0ce1f79-d5b7-4d81-9909-6235a9288c39)
 Registrar nuevos usuarios | Todos | ![image](https://github.com/user-attachments/assets/c7fd3383-787d-4d84-add9-97b6b3c8364d)
 
+&nbsp;
 
-*Gestión de préstamos*
+### Gestión de préstamos
 
 Acción | Usuario habilitado | Notas  
 :-------------------------:|:-------------------------:|:-------------------------:
