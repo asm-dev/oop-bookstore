@@ -61,8 +61,7 @@ Eliminar un libro del catálogo | Admin | ![image](https://github.com/user-attac
 
 Acción | Usuario habilitado | Notas  
 :-------------------------:|:-------------------------:|:-------------------------:
-Login | Todos |  ![image](https://github.com/user-attachments/assets/220de89e-4ae2-4b71-a6ef-8d6e16e7f2ac)
-Una vez instroducidas, se validan las credenciales en el servidor. Si son correctas, el usuario puede acceder 
+Login | Todos |  ![image](https://github.com/user-attachments/assets/220de89e-4ae2-4b71-a6ef-8d6e16e7f2ac) Una vez introducidas, se validan las credenciales en el servidor. Si son correctas, el usuario puede acceder 
 Logout | Todos | ![image](https://github.com/user-attachments/assets/d0ce1f79-d5b7-4d81-9909-6235a9288c39)
 Registrar nuevos usuarios | Todos | ![image](https://github.com/user-attachments/assets/c7fd3383-787d-4d84-add9-97b6b3c8364d)
 
