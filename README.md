@@ -36,7 +36,7 @@ La realización de este proyecto se relaciona con la entrega de una actividad de
 
 - *Configuración idónea de Typescript*. Usamos los mejores settings del `tsconfig.json` para el proyecto, y nos apoyamos en Webpack para facilitar la transpilación.
 - *Empleo de tips, interfaces y clases*. La estructura de datos de la aplicación se define desde `domain` pasando por `features` hasta el servidor. Aprovechamos las posibilidades que nos da TypeScript para estructurar bien la comunicación entre las diferentes partes del sistema.
-- *Respeto de principios de Programación Orientada a Objetos*. Estos son encapsulación, herencia y polimorfismo. Pueden encontrarse muchos ejemplos en el código, por ejemplo, la herencia de UserAdmin a partir de User.
+- *Respeto de principios de Programación Orientada a Objetos*. Pueden encontrarse muchos ejemplos en el código, por ejemplo, la herencia de UserAdmin a partir de User.
 - *Utilización de interfaces para definir contratos*. En los `service` tanto de Loan, Book como User se generan interfaces para asegurar la estructura de dichos servicios.
 - *Uso de decoradores personalizados*. `loading` permite marcar el inicio y fin de procesos asíncronos, y `user-auth` controlar el acceso a ciertos métodos en función del rol o nivel de permisos del usuario.
 
